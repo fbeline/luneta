@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/luneta
+luneta.so
+luneta.dylib
+luneta.dll
+luneta.a
+luneta.lib
+luneta-test-*
+*.exe
+*.o
+*.obj
+*.lst
