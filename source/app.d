@@ -63,14 +63,13 @@ void printSelection(int count, int selected) {
   attroff(A_REVERSE);
 }
 
-
-
-struct Lv {
+struct KeyProcessor {
   int selected;
   int count;
   string pattern;
   Result[] matches;
   bool dosearch;
+  bool terminate = false;
   Key key = Key();
 
   void getKey() {
@@ -97,20 +96,20 @@ struct Lv {
 }
 
 void loop(scoreFn fzy) {
-  auto lv = Lv();
+  auto kp = KeyProcessor();
   do {
-    lv.getKey();
+    kp.getKey();
     clear();
-    if (lv.dosearch) {
-      lv.matches = fuzzySearch(fzy, lv.pattern);
-      lv.count = to!int(lv.matches.length);
-      lv.selected = lv.count-1;
+    if (kp.dosearch) {
+      kp.matches = fuzzySearch(fzy, kp.pattern);
+      kp.count = to!int(kp.matches.length);
+      kp.selected = kp.count-1;
     }
-    printMatches(lv.matches, lv.selected);
-    printSelection(lv.count, lv.selected);
-    mvprintw(lv.count+1, 0, toStringz("> " ~ lv.pattern));
+    printMatches(kp.matches, kp.selected);
+    printSelection(kp.count, kp.selected);
+    mvprintw(kp.count+1, 0, toStringz("> " ~ kp.pattern));
     refresh();
-  } while(lv.key.type != KeyType.UNKOWN);
+  } while(kp.key.type != KeyType.UNKOWN);
 }
 
 int main() {
