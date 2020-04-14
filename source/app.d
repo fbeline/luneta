@@ -34,7 +34,15 @@ struct Key {
   }
 }
 
-void loop() {
+void printMatches(scoreFn fzy, string pattern) {
+  auto matches = fzy(pattern);
+  matches = matches[0..min(10, matches.length)].reverse;
+  foreach(int i, Result m; matches) {
+    mvprintw(i+1, 0, toStringz(m.value));
+  }
+}
+
+void loop(scoreFn fzy) {
   string pattern;
   auto key = Key();
   do {
@@ -47,12 +55,13 @@ void loop() {
     }
     clear();
     mvprintw(0, 0, toStringz("search: " ~ pattern));
+    printMatches(fzy, pattern);
     refresh();
   } while(key.type != KeyType.UNKOWN);
 }
 
 int main() {
-  auto f = fuzzy(parseStdin());
+  auto fzy = fuzzy(parseStdin());
 
   File tty = File("/dev/tty", "r+");
   SCREEN* screen = newterm(null, tty.getFP, tty.getFP);
@@ -66,7 +75,7 @@ int main() {
   mvprintw(0, 0, toStringz("search: "));
   refresh();
 
-  loop();
+  loop(fzy);
 
   endwin();
   return 0;
