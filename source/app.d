@@ -63,38 +63,54 @@ void printSelection(int count, int selected) {
   attroff(A_REVERSE);
 }
 
-void loop(scoreFn fzy) {
-  int selected, count;
+
+
+struct Lv {
+  int selected;
+  int count;
   string pattern;
   Result[] matches;
-  auto key = Key();
-  do {
+  bool dosearch;
+  Key key = Key();
+
+  void getKey() {
     key.get();
-    bool dosearch = true;
+    dosearch = true;
     if (key.type is KeyType.WIDE_CHARACTER)
       pattern ~= to!char(key.key);
     else if (key.type is KeyType.FUNCTION_KEY) {
-      if (key.key is KEY_BACKSPACE && pattern.length > 0)
-        pattern = pattern[0..pattern.length-1];
-      else if (key.key is KEY_UP) {
-        selected = max(0, selected-1);
-        dosearch = false;
-      } else if (key.key is KEY_DOWN) {
-        selected = min(count-1, selected+1);
-        dosearch = false;
-      }
+      specialHanlder();
     }
+  }
+
+  void specialHanlder() {
+    if (key.key is KEY_BACKSPACE && pattern.length > 0)
+      pattern = pattern[0..pattern.length-1];
+    else if (key.key is KEY_UP) {
+      selected = max(0, selected-1);
+      dosearch = false;
+    } else if (key.key is KEY_DOWN) {
+      selected = min(count-1, selected+1);
+      dosearch = false;
+    }
+  }
+}
+
+void loop(scoreFn fzy) {
+  auto lv = Lv();
+  do {
+    lv.getKey();
     clear();
-    if (dosearch) {
-      matches = fuzzySearch(fzy, pattern);
-      count = to!int(matches.length);
-      selected = count-1;
+    if (lv.dosearch) {
+      lv.matches = fuzzySearch(fzy, lv.pattern);
+      lv.count = to!int(lv.matches.length);
+      lv.selected = lv.count-1;
     }
-    printMatches(matches, selected);
-    printSelection(count, selected);
-    mvprintw(count+1, 0, toStringz("> " ~ pattern));
+    printMatches(lv.matches, lv.selected);
+    printSelection(lv.count, lv.selected);
+    mvprintw(lv.count+1, 0, toStringz("> " ~ lv.pattern));
     refresh();
-  } while(key.type != KeyType.UNKOWN);
+  } while(lv.key.type != KeyType.UNKOWN);
 }
 
 int main() {
@@ -109,7 +125,7 @@ int main() {
   noecho();
   keypad(stdscr, true);
 
-  mvprintw(0, 0, toStringz("> "));
+  mvprintw(1, 0, toStringz("> "));
   refresh();
 
   loop(fzy);
