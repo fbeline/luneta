@@ -3,6 +3,7 @@ import std.string : toStringz, strip;
 import std.conv;
 import std.typecons;
 import std.algorithm;
+import std.array;
 import fuzzyd.core;
 import deimos.ncurses.curses;
 
@@ -36,10 +37,13 @@ struct Key {
 
 void printMatches(scoreFn fzy, string pattern) {
   auto matches = fzy(pattern);
-  matches = matches[0..min(10, matches.length)].reverse;
-  foreach(int i, Result m; matches) {
-    mvprintw(i+1, 0, toStringz(m.value));
-  }
+  int index = 1;
+  matches[0..min(10, matches.length)]
+    .reverse
+    .filter!(m => m.score > 0)
+    .each!((m) {
+        mvprintw(index++, 2, toStringz(m.value));
+      });
 }
 
 void loop(scoreFn fzy) {
@@ -54,8 +58,8 @@ void loop(scoreFn fzy) {
         pattern = pattern[0..pattern.length-1];
     }
     clear();
-    mvprintw(0, 0, toStringz("search: " ~ pattern));
     printMatches(fzy, pattern);
+    mvprintw(0, 0, toStringz("search: " ~ pattern));
     refresh();
   } while(key.type != KeyType.UNKOWN);
 }
