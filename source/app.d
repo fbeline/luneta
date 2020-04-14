@@ -1,5 +1,6 @@
 import std.stdio;
 import std.string : toStringz, strip;
+import std.conv;
 import fuzzyd.core;
 import deimos.ncurses.curses;
 
@@ -23,10 +24,19 @@ int main()
   noecho();
 	keypad(stdscr, true);
 
-  printw(cmd);
+	mvprintw(0, 0, toStringz("search: "));
   refresh();
 
-  getch();
+  int key;
+  string pattern;
+  while((key = getch()) != ERR) {
+    clear();
+    pattern ~= key;
+    mvprintw(10, 0, toStringz(to!string(key)));
+    mvprintw(0, 0, toStringz("search: " ~ pattern));
+    refresh();
+  }
+
   endwin();
 
   return 0;
