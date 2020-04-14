@@ -42,25 +42,36 @@ int printMatches(scoreFn fzy, string pattern) {
     .reverse
     .filter!(m => m.score > 0)
     .each!((m) {
-        mvprintw(index++, 2, toStringz(m.value));
+        mvprintw(index++, 4, toStringz(m.value));
       });
   return index;
 }
 
 void loop(scoreFn fzy) {
+  int selected, count;
   string pattern;
   auto key = Key();
   do {
     key.get();
+    bool dosearch = true;
     if (key.type is KeyType.WIDE_CHARACTER)
       pattern ~= to!char(key.key);
     else if (key.type is KeyType.FUNCTION_KEY) {
       if (key.key is KEY_BACKSPACE && pattern.length > 0)
         pattern = pattern[0..pattern.length-1];
+      else if (key.key is KEY_UP) {
+        selected = max(0, selected-1);
+        dosearch = false;
+      } else if (key.key is KEY_DOWN) {
+        selected = min(count-1, selected+1);
+        dosearch = false;
+      }
     }
     clear();
-    int i = printMatches(fzy, pattern);
-    mvprintw(i, 0, toStringz("search: " ~ pattern));
+    count = printMatches(fzy, pattern);
+    mvprintw(selected, 0, toStringz(">"));
+    mvprintw(count+1, 0, toStringz("> " ~ pattern));
+    if (dosearch) selected = count-1;
     refresh();
   } while(key.type != KeyType.UNKOWN);
 }
@@ -77,7 +88,7 @@ int main() {
   noecho();
   keypad(stdscr, true);
 
-  mvprintw(0, 0, toStringz("search: "));
+  mvprintw(0, 0, toStringz("> "));
   refresh();
 
   loop(fzy);
