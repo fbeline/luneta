@@ -69,9 +69,9 @@ void loop(scoreFn fzy) {
     }
     clear();
     count = printMatches(fzy, pattern);
+    if (dosearch) selected = count-1;
     mvprintw(selected, 0, toStringz(">"));
     mvprintw(count+1, 0, toStringz("> " ~ pattern));
-    if (dosearch) selected = count-1;
     refresh();
   } while(key.type != KeyType.UNKOWN);
 }
