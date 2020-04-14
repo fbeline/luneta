@@ -2,6 +2,7 @@ import std.stdio;
 import std.string : toStringz, strip;
 import std.conv;
 import std.typecons;
+import std.algorithm;
 import fuzzyd.core;
 import deimos.ncurses.curses;
 
@@ -13,7 +14,7 @@ string[] parseStdin() {
   return lines;
 }
 
-enum KeyType {SPECIAL, NORMAL, UNKOWN};
+enum KeyType {FUNCTION_KEY, WIDE_CHARACTER, UNKOWN};
 
 struct Key {
   KeyType type;
@@ -22,10 +23,10 @@ struct Key {
   void get() {
     switch (get_wch(&key)) {
       case KEY_CODE_YES:
-        type = KeyType.SPECIAL;
+        type = KeyType.FUNCTION_KEY;
         break;
       case OK:
-        type = KeyType.NORMAL;
+        type = KeyType.WIDE_CHARACTER;
         break;
       default:
         type = KeyType.UNKOWN;
@@ -33,6 +34,22 @@ struct Key {
   }
 }
 
+void loop() {
+  string pattern;
+  auto key = Key();
+  do {
+    key.get();
+    if (key.type is KeyType.WIDE_CHARACTER)
+      pattern ~= to!char(key.key);
+    else if (key.type is KeyType.FUNCTION_KEY) {
+      if (key.key is KEY_BACKSPACE && pattern.length > 0)
+        pattern = pattern[0..pattern.length-1];
+    }
+    clear();
+    mvprintw(0, 0, toStringz("search: " ~ pattern));
+    refresh();
+  } while(key.type != KeyType.UNKOWN);
+}
 
 int main() {
   auto f = fuzzy(parseStdin());
@@ -49,15 +66,7 @@ int main() {
   mvprintw(0, 0, toStringz("search: "));
   refresh();
 
-  string pattern;
-  auto key = Key();
-  do {
-    key.get();
-    if (key.type == KeyType.NORMAL) pattern ~= to!char(key.key);
-    // mvprintw(10, 0, toStringz(key.key.to!string));
-    mvprintw(0, 0, toStringz("search: " ~ pattern));
-    refresh();
-  } while(key.type != KeyType.UNKOWN);
+  loop();
 
   endwin();
   return 0;
