@@ -35,15 +35,16 @@ struct Key {
   }
 }
 
-void printMatches(scoreFn fzy, string pattern) {
+int printMatches(scoreFn fzy, string pattern) {
   auto matches = fzy(pattern);
-  int index = 1;
+  int index;
   matches[0..min(10, matches.length)]
     .reverse
     .filter!(m => m.score > 0)
     .each!((m) {
         mvprintw(index++, 2, toStringz(m.value));
       });
+  return index;
 }
 
 void loop(scoreFn fzy) {
@@ -58,8 +59,8 @@ void loop(scoreFn fzy) {
         pattern = pattern[0..pattern.length-1];
     }
     clear();
-    printMatches(fzy, pattern);
-    mvprintw(0, 0, toStringz("search: " ~ pattern));
+    int i = printMatches(fzy, pattern);
+    mvprintw(i, 0, toStringz("search: " ~ pattern));
     refresh();
   } while(key.type != KeyType.UNKOWN);
 }
