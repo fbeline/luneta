@@ -35,21 +35,38 @@ struct Key {
   }
 }
 
-int printMatches(scoreFn fzy, string pattern) {
+Result[] fuzzySearch(scoreFn fzy, string pattern) {
   auto matches = fzy(pattern);
-  int index;
-  matches[0..min(10, matches.length)]
+  return matches[0..min(10, matches.length)]
     .reverse
     .filter!(m => m.score > 0)
-    .each!((m) {
-        mvprintw(index++, 4, toStringz(m.value));
-      });
-  return index;
+    .array();
+}
+
+void printMatches(Result[] matches, int selected) {
+  foreach(int i, Result m; matches) {
+    if (i is selected) {
+      attron(A_REVERSE);
+      mvprintw(i, 1, toStringz("  " ~ m.value));
+      attroff(A_REVERSE);
+    } else {
+      mvprintw(i, 3, toStringz(m.value));
+    }
+  }
+}
+
+void printSelection(int count, int selected) {
+  attron(A_REVERSE);
+  for(int i = 0; i <= count-1; i++)
+    mvprintw(i, 0, toStringz(" "));
+  mvprintw(selected, 0, toStringz(">"));
+  attroff(A_REVERSE);
 }
 
 void loop(scoreFn fzy) {
   int selected, count;
   string pattern;
+  Result[] matches;
   auto key = Key();
   do {
     key.get();
@@ -68,9 +85,13 @@ void loop(scoreFn fzy) {
       }
     }
     clear();
-    count = printMatches(fzy, pattern);
-    if (dosearch) selected = count-1;
-    mvprintw(selected, 0, toStringz(">"));
+    if (dosearch) {
+      matches = fuzzySearch(fzy, pattern);
+      count = to!int(matches.length);
+      selected = count-1;
+    }
+    printMatches(matches, selected);
+    printSelection(count, selected);
     mvprintw(count+1, 0, toStringz("> " ~ pattern));
     refresh();
   } while(key.type != KeyType.UNKOWN);
