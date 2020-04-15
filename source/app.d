@@ -83,18 +83,24 @@ struct KeyProcessor {
   }
 
   void specialHanlder() {
-    if (key.key is KEY_BACKSPACE && pattern.length > 0)
-      pattern = pattern[0..pattern.length-1];
-    else if (key.key is KEY_UP) {
-      selected = max(0, selected-1);
-      dosearch = false;
-    } else if (key.key is KEY_DOWN) {
-      selected = min(count-1, selected+1);
-      dosearch = false;
+    switch(key.key) {
+      case KEY_BACKSPACE:
+        if (pattern.length > 0) pattern = pattern[0..pattern.length-1];
+        break;
+      case KEY_DOWN:
+        selected = min(count-1, selected+1);
+        dosearch = false;
+        break;
+      case KEY_UP:
+        selected = max(0, selected-1);
+        dosearch = false;
+        break;
+      default: break;
     }
   }
 }
 
+alias loopFn = void function (scoreFn);
 void loop(scoreFn fzy) {
   auto kp = KeyProcessor();
   do {
@@ -112,14 +118,11 @@ void loop(scoreFn fzy) {
   } while(kp.key.type != KeyType.UNKOWN);
 }
 
-int main() {
-  auto fzy = fuzzy(parseStdin());
-
+void cursesInit(loopFn loop, scoreFn fzy) {
   File tty = File("/dev/tty", "r+");
   SCREEN* screen = newterm(null, tty.getFP, tty.getFP);
   screen.set_term;
-  scope (exit)
-    endwin();
+  scope (exit) endwin();
   cbreak();
   noecho();
   keypad(stdscr, true);
@@ -130,5 +133,10 @@ int main() {
   loop(fzy);
 
   endwin();
+}
+
+int main() {
+  auto fzy = fuzzy(parseStdin());
+  cursesInit(&loop, fzy);
   return 0;
 }
