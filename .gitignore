@@ -13,3 +13,5 @@ luneta-test-*
 *.o
 *.obj
 *.lst
+.idea/
+*.iml
