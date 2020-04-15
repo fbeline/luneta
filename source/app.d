@@ -40,7 +40,6 @@ struct Key {
 FuzzyResult[] fuzzySearch(fuzzyFn fzy, string pattern) {
   auto matches = fzy(pattern);
   return matches
-    .reverse
     .filter!(m => m.score > 0)
     .array();
 }
