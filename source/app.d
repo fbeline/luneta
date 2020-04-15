@@ -72,9 +72,14 @@ struct KeyProcessor {
   bool terminate = false;
   Key key = Key();
 
+  string getSelected() {
+    return matches[selected].value;
+  }
+
   void getKey() {
     key.get();
     dosearch = true;
+
     if (key.type is KeyType.WIDE_CHARACTER)
       pattern ~= to!char(key.key);
     else if (key.type is KeyType.FUNCTION_KEY) {
@@ -95,48 +100,62 @@ struct KeyProcessor {
         selected = max(0, selected-1);
         dosearch = false;
         break;
-      default: break;
+      case KEY_ENTER:
+        terminate = true;
+        break;
+      default:
+        dosearch = false;
+        break;
     }
   }
 }
 
-alias loopFn = void function (scoreFn);
-void loop(scoreFn fzy) {
-  auto kp = KeyProcessor();
-  do {
-    kp.getKey();
-    clear();
-    if (kp.dosearch) {
-      kp.matches = fuzzySearch(fzy, kp.pattern);
-      kp.count = to!int(kp.matches.length);
-      kp.selected = kp.count-1;
-    }
-    printMatches(kp.matches, kp.selected);
-    printSelection(kp.count, kp.selected);
-    mvprintw(kp.count+1, 0, toStringz("> " ~ kp.pattern));
-    refresh();
-  } while(kp.key.type != KeyType.UNKOWN);
+alias loopFn = void delegate ();
+loopFn loop(scoreFn fzy, ref string result) {
+  return delegate void() {
+    auto kp = KeyProcessor();
+    do {
+      kp.getKey();
+      clear();
+      if (kp.terminate) {
+        result = kp.getSelected;
+        break;
+      }
+      if (kp.dosearch) {
+        kp.matches = fuzzySearch(fzy, kp.pattern);
+        kp.count = to!int(kp.matches.length);
+        kp.selected = kp.count-1;
+      }
+      printMatches(kp.matches, kp.selected);
+      printSelection(kp.count, kp.selected);
+      mvprintw(kp.count+1, 0, toStringz("> " ~ kp.pattern));
+      mvprintw(30, 0, toStringz(to!string(kp.key.type)));
+      refresh();
+    } while(kp.key.type != KeyType.UNKOWN);
+  };
 }
 
-void cursesInit(loopFn loop, scoreFn fzy) {
+void cursesInit(loopFn loop) {
   File tty = File("/dev/tty", "r+");
   SCREEN* screen = newterm(null, tty.getFP, tty.getFP);
   screen.set_term;
   scope (exit) endwin();
-  cbreak();
-  noecho();
+  cbreak;
+  noecho;
   keypad(stdscr, true);
 
   mvprintw(1, 0, toStringz("> "));
   refresh();
 
-  loop(fzy);
+  loop();
 
   endwin();
 }
 
 int main() {
   auto fzy = fuzzy(parseStdin());
-  cursesInit(&loop, fzy);
+  string result;
+  cursesInit(loop(fzy, result));
+  write(result);
   return 0;
 }
