@@ -4,7 +4,8 @@
 	],
 	"copyright": "Copyright © 2020, Felipe Beline Baravieira",
 	"dependencies": {
-		"fuzzyd": ">=0.1.1-beta <0.2.0-0"
+		"fuzzyd": ">=0.1.2-beta <0.2.0-0",
+		"ncurses": "~master"
 	},
 	"description": "Terminal fuzzy search",
 	"license": "MIT",

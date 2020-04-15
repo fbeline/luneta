@@ -1,0 +1,10 @@
+{
+	"fileVersion": 1,
+	"versions": {
+		"arsd-official": "7.2.0",
+		"fuzzyd": "0.1.2-beta",
+		"ncurses": "~master",
+		"riverd-loader": "1.0.2",
+		"riverd-ncurses": "1.0.5"
+	}
+}
