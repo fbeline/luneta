@@ -35,22 +35,35 @@ struct Key {
   }
 }
 
-Result[] fuzzySearch(scoreFn fzy, string pattern) {
+FuzzyResult[] fuzzySearch(fuzzyFn fzy, string pattern) {
   auto matches = fzy(pattern);
-  return matches[0..min(10, matches.length)]
+  return matches[0..min(20, matches.length)]
     .reverse
     .filter!(m => m.score > 0)
     .array();
 }
 
-void printMatches(Result[] matches, int selected) {
-  foreach(int i, Result m; matches) {
+void printMatches(FuzzyResult[] matches, int selected) {
+
+  void printLine(int line, FuzzyResult m) {
+    for(int i = 0; i < m.value.length; i++) {
+      if (m.matches.canFind(i)) {
+        attron(A_BOLD);
+        mvprintw(line, i + 2, toStringz(m.value[i].to!string));
+        attroff(A_BOLD);
+      } else {
+        mvprintw(line, i + 2, toStringz(m.value[i].to!string));
+      }
+    }
+  }
+
+  foreach(int i, FuzzyResult m; matches) {
     if (i is selected) {
       attron(A_REVERSE);
-      mvprintw(i, 1, toStringz("  " ~ m.value));
+      printLine(i, m);
       attroff(A_REVERSE);
     } else {
-      mvprintw(i, 3, toStringz(m.value));
+      printLine(i, m);
     }
   }
 }
@@ -59,7 +72,7 @@ void printSelection(int count, int selected) {
   attron(A_REVERSE);
   for(int i = 0; i <= count-1; i++)
     mvprintw(i, 0, toStringz(" "));
-  mvprintw(selected, 0, toStringz(">"));
+  mvprintw(selected, 0, toStringz("> "));
   attroff(A_REVERSE);
 }
 
@@ -67,7 +80,7 @@ struct KeyProcessor {
   int selected;
   int count;
   string pattern;
-  Result[] matches;
+  FuzzyResult[] matches;
   bool dosearch;
   bool terminate = false;
   Key key = Key();
@@ -111,7 +124,7 @@ struct KeyProcessor {
 }
 
 alias loopFn = void delegate ();
-loopFn loop(scoreFn fzy, ref string result) {
+loopFn loop(fuzzyFn fzy, ref string result) {
   return delegate void() {
     auto kp = KeyProcessor();
     do {
