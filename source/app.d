@@ -37,13 +37,6 @@ struct Key {
   }
 }
 
-FuzzyResult[] fuzzySearch(fuzzyFn fzy, string pattern) {
-  auto matches = fzy(pattern);
-  return matches
-    .filter!(m => m.score > 0)
-    .array();
-}
-
 void printMatches(FuzzyResult[] matches, int selected) {
 
   void printLine(int line, FuzzyResult m) {
@@ -80,9 +73,20 @@ void printSelection(KeyProcessor kp) {
   attroff(A_REVERSE);
 }
 
+void printTotalMatches(KeyProcessor kp) {
+  auto str = (to!string(kp.matches.length) ~
+              "/" ~
+              to!string(kp.allMatches.length)).toStringz;
+
+  attron(A_BOLD);
+  mvprintw(MAX_PRINT, 1, str);
+  attroff(A_BOLD);
+}
+
 struct KeyProcessor {
   int selected;
   string pattern;
+  FuzzyResult[] allMatches;
   FuzzyResult[] matches;
   bool dosearch;
   bool terminate = false;
@@ -138,11 +142,13 @@ loopFn loop(fuzzyFn fzy, ref string result) {
         break;
       }
       if (kp.dosearch) {
-        kp.matches = fuzzySearch(fzy, kp.pattern);
+        kp.allMatches = fzy(kp.pattern);
+        kp.matches = kp.allMatches.filter!(m => m.score > 0).array();
         kp.selected = MAX_PRINT-1;
       }
       printMatches(kp.matches, kp.selected);
       printSelection(kp);
+      printTotalMatches(kp);
       mvprintw(MAX_PRINT+1, 0, toStringz("> " ~ kp.pattern));
       refresh();
     } while(kp.key.type != KeyType.UNKOWN);
