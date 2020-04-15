@@ -43,9 +43,6 @@ loopFn loop(fuzzyFn fzy, ref string result)
                 kp.matches = kp.allMatches.filter!(m => m.score > 0).array();
                 kp.selected = MAX_PRINT - 1;
             }
-            printMatches(kp);
-            printSelection(kp);
-            printTotalMatches(kp);
             foreach (fn; printers)
                 fn(kp);
             refresh();
@@ -77,7 +74,7 @@ int main()
 {
     auto fzy = fuzzy(parseStdin());
     string result;
-    cursesInit(loop(fzy, result));
-    write(result);
+    cursesInit( loop( fzy, result));
+    writeln( result);
     return 0;
 }
