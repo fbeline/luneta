@@ -6,8 +6,10 @@ import std.algorithm;
 import std.array;
 import fuzzyd.core;
 import deimos.ncurses.curses;
+import printers;
+import keyboard;
 
-const int MAX_PRINT = 20;
+const MAX_PRINT = 20;
 
 string[] parseStdin() {
   string l;
@@ -15,121 +17,6 @@ string[] parseStdin() {
   while ((l = stdin.readln()) !is null)
     lines ~= strip(l);
   return lines;
-}
-
-enum KeyType {FUNCTION_KEY, WIDE_CHARACTER, UNKOWN};
-
-struct Key {
-  KeyType type;
-  wint_t key;
-
-  void get() {
-    switch (get_wch(&key)) {
-      case KEY_CODE_YES:
-        type = KeyType.FUNCTION_KEY;
-        break;
-      case OK:
-        type = KeyType.WIDE_CHARACTER;
-        break;
-      default:
-        type = KeyType.UNKOWN;
-    }
-  }
-}
-
-void printMatches(FuzzyResult[] matches, int selected) {
-
-  void printLine(int line, FuzzyResult m) {
-    for(int i; i < m.value.length; i++) {
-      if (m.matches.canFind(i)) {
-        attron(A_BOLD);
-        mvprintw(line, i + 2, toStringz(m.value[i].to!string));
-        attroff(A_BOLD);
-      } else {
-        mvprintw(line, i + 2, toStringz(m.value[i].to!string));
-      }
-    }
-  }
-
-  for(int i; i < min(MAX_PRINT, matches.length); i++) {
-    immutable int lineNumber = MAX_PRINT - i - 1;
-    if (lineNumber is selected) {
-      attron(A_REVERSE);
-      printLine(lineNumber, matches[i]);
-      attroff(A_REVERSE);
-    } else {
-      printLine(lineNumber, matches[i]);
-    }
-  }
-}
-
-void printSelection(KeyProcessor kp) {
-  attron(A_REVERSE);
-  immutable stopLine = max(0, MAX_PRINT - kp.matches.length);
-  for(int i = MAX_PRINT-1; i >= stopLine; i--)
-    mvprintw(i, 0, toStringz(" "));
-  if (kp.matches.length > 0)
-    mvprintw(kp.selected, 0, toStringz("> "));
-  attroff(A_REVERSE);
-}
-
-void printTotalMatches(KeyProcessor kp) {
-  auto str = (to!string(kp.matches.length) ~
-              "/" ~
-              to!string(kp.allMatches.length)).toStringz;
-
-  attron(A_BOLD);
-  mvprintw(MAX_PRINT, 1, str);
-  attroff(A_BOLD);
-}
-
-struct KeyProcessor {
-  int selected;
-  string pattern;
-  FuzzyResult[] allMatches;
-  FuzzyResult[] matches;
-  bool dosearch;
-  bool terminate = false;
-  Key key = Key();
-
-  string getSelected() {
-    immutable index = MAX_PRINT - selected;
-    return matches[index].value;
-  }
-
-  void getKey() {
-    key.get();
-    dosearch = true;
-
-    if (key.type is KeyType.WIDE_CHARACTER) {
-      if (key.key is 10) {
-        terminate = true;
-      } else {
-        pattern ~= to!char(key.key);
-      }
-    } else if (key.type is KeyType.FUNCTION_KEY) {
-      specialHanlder();
-    }
-  }
-
-  void specialHanlder() {
-    switch(key.key) {
-      case KEY_BACKSPACE:
-        if (pattern.length > 0) pattern = pattern[0..pattern.length-1];
-        break;
-      case KEY_DOWN:
-        selected = min(19, selected+1);
-        dosearch = false;
-        break;
-      case KEY_UP:
-        immutable yLimit = MAX_PRINT - matches.length.to!int;
-        selected = max(yLimit, selected-1);
-        dosearch = false;
-        break;
-      default:
-        dosearch = false;
-    }
-  }
 }
 
 alias loopFn = void delegate ();
