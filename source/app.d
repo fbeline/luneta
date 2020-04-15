@@ -70,11 +70,13 @@ void printMatches(FuzzyResult[] matches, int selected) {
   }
 }
 
-void printSelection(int selected) {
+void printSelection(KeyProcessor kp) {
   attron(A_REVERSE);
-  for(int i = 0; i < MAX_PRINT; i++)
+  immutable stopLine = max(0, MAX_PRINT - kp.matches.length);
+  for(int i = MAX_PRINT-1; i > stopLine; i--)
     mvprintw(i, 0, toStringz(" "));
-  mvprintw(selected, 0, toStringz("> "));
+  if (kp.matches.length > 0)
+    mvprintw(kp.selected, 0, toStringz("> "));
   attroff(A_REVERSE);
 }
 
@@ -140,7 +142,7 @@ loopFn loop(fuzzyFn fzy, ref string result) {
         kp.selected = MAX_PRINT-1;
       }
       printMatches(kp.matches, kp.selected);
-      printSelection(kp.selected);
+      printSelection(kp);
       mvprintw(MAX_PRINT+1, 0, toStringz("> " ~ kp.pattern));
       refresh();
     } while(kp.key.type != KeyType.UNKOWN);
