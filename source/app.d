@@ -66,7 +66,7 @@ void printMatches(FuzzyResult[] matches, int selected) {
 void printSelection(KeyProcessor kp) {
   attron(A_REVERSE);
   immutable stopLine = max(0, MAX_PRINT - kp.matches.length);
-  for(int i = MAX_PRINT-1; i > stopLine; i--)
+  for(int i = MAX_PRINT-1; i >= stopLine; i--)
     mvprintw(i, 0, toStringz(" "));
   if (kp.matches.length > 0)
     mvprintw(kp.selected, 0, toStringz("> "));
@@ -122,7 +122,8 @@ struct KeyProcessor {
         dosearch = false;
         break;
       case KEY_UP:
-        selected = max(0, selected-1);
+        immutable yLimit = MAX_PRINT - matches.length.to!int;
+        selected = max(yLimit, selected-1);
         dosearch = false;
         break;
       default:
