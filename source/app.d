@@ -7,6 +7,8 @@ import std.array;
 import fuzzyd.core;
 import deimos.ncurses.curses;
 
+const int MAX_PRINT = 20;
+
 string[] parseStdin() {
   string l;
   string[] lines;
@@ -35,18 +37,10 @@ struct Key {
   }
 }
 
-FuzzyResult[] fuzzySearch(fuzzyFn fzy, string pattern) {
-  auto matches = fzy(pattern);
-  return matches[0..min(20, matches.length)]
-    .reverse
-    .filter!(m => m.score > 0)
-    .array();
-}
-
 void printMatches(FuzzyResult[] matches, int selected) {
 
   void printLine(int line, FuzzyResult m) {
-    for(int i = 0; i < m.value.length; i++) {
+    for(int i; i < m.value.length; i++) {
       if (m.matches.canFind(i)) {
         attron(A_BOLD);
         mvprintw(line, i + 2, toStringz(m.value[i].to!string));
@@ -57,36 +51,50 @@ void printMatches(FuzzyResult[] matches, int selected) {
     }
   }
 
-  foreach(int i, FuzzyResult m; matches) {
-    if (i is selected) {
+  for(int i; i < min(MAX_PRINT, matches.length); i++) {
+    immutable int lineNumber = MAX_PRINT - i - 1;
+    if (lineNumber is selected) {
       attron(A_REVERSE);
-      printLine(i, m);
+      printLine(lineNumber, matches[i]);
       attroff(A_REVERSE);
     } else {
-      printLine(i, m);
+      printLine(lineNumber, matches[i]);
     }
   }
 }
 
-void printSelection(int count, int selected) {
+void printSelection(KeyProcessor kp) {
   attron(A_REVERSE);
-  for(int i = 0; i <= count-1; i++)
+  immutable stopLine = max(0, MAX_PRINT - kp.matches.length);
+  for(int i = MAX_PRINT-1; i >= stopLine; i--)
     mvprintw(i, 0, toStringz(" "));
-  mvprintw(selected, 0, toStringz("> "));
+  if (kp.matches.length > 0)
+    mvprintw(kp.selected, 0, toStringz("> "));
   attroff(A_REVERSE);
+}
+
+void printTotalMatches(KeyProcessor kp) {
+  auto str = (to!string(kp.matches.length) ~
+              "/" ~
+              to!string(kp.allMatches.length)).toStringz;
+
+  attron(A_BOLD);
+  mvprintw(MAX_PRINT, 1, str);
+  attroff(A_BOLD);
 }
 
 struct KeyProcessor {
   int selected;
-  int count;
   string pattern;
+  FuzzyResult[] allMatches;
   FuzzyResult[] matches;
   bool dosearch;
   bool terminate = false;
   Key key = Key();
 
   string getSelected() {
-    return matches[selected].value;
+    immutable index = MAX_PRINT - selected;
+    return matches[index].value;
   }
 
   void getKey() {
@@ -110,11 +118,12 @@ struct KeyProcessor {
         if (pattern.length > 0) pattern = pattern[0..pattern.length-1];
         break;
       case KEY_DOWN:
-        selected = min(count-1, selected+1);
+        selected = min(19, selected+1);
         dosearch = false;
         break;
       case KEY_UP:
-        selected = max(0, selected-1);
+        immutable yLimit = MAX_PRINT - matches.length.to!int;
+        selected = max(yLimit, selected-1);
         dosearch = false;
         break;
       default:
@@ -135,13 +144,14 @@ loopFn loop(fuzzyFn fzy, ref string result) {
         break;
       }
       if (kp.dosearch) {
-        kp.matches = fuzzySearch(fzy, kp.pattern);
-        kp.count = to!int(kp.matches.length);
-        kp.selected = kp.count-1;
+        kp.allMatches = fzy(kp.pattern);
+        kp.matches = kp.allMatches.filter!(m => m.score > 0).array();
+        kp.selected = MAX_PRINT-1;
       }
       printMatches(kp.matches, kp.selected);
-      printSelection(kp.count, kp.selected);
-      mvprintw(kp.count+1, 0, toStringz("> " ~ kp.pattern));
+      printSelection(kp);
+      printTotalMatches(kp);
+      mvprintw(MAX_PRINT+1, 0, toStringz("> " ~ kp.pattern));
       refresh();
     } while(kp.key.type != KeyType.UNKOWN);
   };
