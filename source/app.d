@@ -93,7 +93,8 @@ struct KeyProcessor {
   Key key = Key();
 
   string getSelected() {
-    return matches[selected].value;
+    immutable index = MAX_PRINT - selected;
+    return matches[index].value;
   }
 
   void getKey() {
