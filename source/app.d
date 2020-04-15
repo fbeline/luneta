@@ -80,9 +80,13 @@ struct KeyProcessor {
     key.get();
     dosearch = true;
 
-    if (key.type is KeyType.WIDE_CHARACTER)
-      pattern ~= to!char(key.key);
-    else if (key.type is KeyType.FUNCTION_KEY) {
+    if (key.type is KeyType.WIDE_CHARACTER) {
+      if (key.key is 10) {
+        terminate = true;
+      } else {
+        pattern ~= to!char(key.key);
+      }
+    } else if (key.type is KeyType.FUNCTION_KEY) {
       specialHanlder();
     }
   }
@@ -100,12 +104,8 @@ struct KeyProcessor {
         selected = max(0, selected-1);
         dosearch = false;
         break;
-      case KEY_ENTER:
-        terminate = true;
-        break;
       default:
         dosearch = false;
-        break;
     }
   }
 }
@@ -129,7 +129,6 @@ loopFn loop(scoreFn fzy, ref string result) {
       printMatches(kp.matches, kp.selected);
       printSelection(kp.count, kp.selected);
       mvprintw(kp.count+1, 0, toStringz("> " ~ kp.pattern));
-      mvprintw(30, 0, toStringz(to!string(kp.key.type)));
       refresh();
     } while(kp.key.type != KeyType.UNKOWN);
   };
