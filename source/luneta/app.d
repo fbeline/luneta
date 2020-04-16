@@ -1,5 +1,5 @@
 import std.stdio;
-import std.string : toStringz, strip;
+import std.string;
 import std.conv;
 import std.typecons;
 import std.algorithm;
@@ -8,11 +8,7 @@ import fuzzyd.core;
 import deimos.ncurses.curses;
 import luneta.printers;
 import luneta.keyboard;
-
-const MAX_PRINT = 20;
-const printFn[] printers = [
-    &printMatches, &printSelection, &printTotalMatches, &printCursor
-];
+import luneta.window;
 
 string[] parseStdin()
 {
@@ -23,9 +19,11 @@ string[] parseStdin()
     return lines;
 }
 
-alias loopFn = void delegate();
-loopFn loop(fuzzyFn fzy, ref string result)
+void delegate() loop(fuzzyFn fzy, ref string result)
 {
+    const printFn[] printers = [
+        &printMatches, &printSelection, &printTotalMatches, &printCursor
+    ];
     return delegate void() {
         auto kp = KeyProcessor();
         do
@@ -41,7 +39,7 @@ loopFn loop(fuzzyFn fzy, ref string result)
             {
                 kp.allMatches = fzy(kp.pattern);
                 kp.matches = kp.allMatches.filter!(m => m.score > 0).array();
-                kp.selected = MAX_PRINT - 1;
+                kp.selected = getWindowSize()-3;
             }
             foreach (fn; printers)
                 fn(kp);
@@ -51,30 +49,11 @@ loopFn loop(fuzzyFn fzy, ref string result)
     };
 }
 
-void cursesInit(loopFn loop)
-{
-    File tty = File("/dev/tty", "r+");
-    SCREEN* screen = newterm(null, tty.getFP, tty.getFP);
-    screen.set_term;
-    scope (exit)
-        endwin();
-    cbreak;
-    noecho;
-    keypad(stdscr, true);
-
-    mvprintw(1, 0, toStringz("> "));
-    refresh();
-
-    loop();
-
-    endwin();
-}
-
 int main()
 {
     auto fzy = fuzzy(parseStdin());
     string result;
-    cursesInit( loop( fzy, result));
-    writeln( result);
+    init(loop(fzy, result));
+    writeln(result);
     return 0;
 }

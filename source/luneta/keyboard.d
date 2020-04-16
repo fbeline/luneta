@@ -3,9 +3,9 @@ module luneta.keyboard;
 import std.conv;
 import std.algorithm;
 import deimos.ncurses.curses;
+import luneta.window;
 import fuzzyd.core;
 
-const MAX_PRINT = 20;
 enum KeyType
 {
     FUNCTION_KEY,
@@ -46,7 +46,7 @@ struct KeyProcessor
 
     string getSelected()
     {
-        immutable index = MAX_PRINT - selected - 1;
+        immutable index = getWindowSize() - selected - 3;
         return matches[index].value;
     }
 
@@ -81,12 +81,12 @@ struct KeyProcessor
                 pattern = pattern[0 .. pattern.length - 1];
             break;
         case KEY_DOWN:
-            selected = min(19, selected + 1);
+            selected = min(getWindowSize() - 3, selected + 1);
             dosearch = false;
             break;
         case KEY_UP:
-            immutable yLimit = max( 0, MAX_PRINT - matches.length.to!int);
-            selected = max( yLimit, selected - 1);
+            immutable yLimit = max(0, getWindowSize() - matches.length.to!int - 2);
+            selected = max(yLimit, selected - 1);
             dosearch = false;
             break;
         default:
