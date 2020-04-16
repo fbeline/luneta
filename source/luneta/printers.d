@@ -11,7 +11,7 @@ alias printFn = void function(KeyProcessor);
 
 void printMatches(KeyProcessor kp)
 {
-    immutable maxLines = getWindowSize() - 2;
+    const maxLines = getWindowSize() - 2;
     void printLine(int line, FuzzyResult m)
     {
         auto indexes = m.matches.dup;
@@ -52,8 +52,6 @@ void printSelection(KeyProcessor kp)
 
     attron(A_REVERSE);
     immutable stopLine = max(0, maxLines - kp.matches.length);
-    for (int i = maxLines - 1; i >= stopLine; i--)
-        mvprintw(i, 0, " ");
     if (kp.matches.length > 0)
         mvprintw(kp.selected, 0, "> ");
     attroff(A_REVERSE);
