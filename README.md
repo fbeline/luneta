@@ -1,3 +1,3 @@
-# luneta
+# luneta [![Build Status](https://travis-ci.org/fbeline/luneta.svg?branch=master)](https://travis-ci.org/fbeline/luneta)
 
 under construction...
