@@ -4,6 +4,12 @@ import std.stdio;
 import std.string : toStringz, strip;
 import deimos.ncurses.curses;
 
+const MAX_L = 20;
+
+void mvprintw(int line, int col, string str) {
+    deimos.ncurses.curses.mvprintw(line, col, toStringz(str));
+}
+
 void init(void delegate() loop)
 {
     File tty = File( "/dev/tty", "r+");
@@ -15,7 +21,7 @@ void init(void delegate() loop)
     noecho;
     keypad( stdscr, true);
 
-    mvprintw( 1, 0, toStringz( "> "));
+    mvprintw(0, 0, ">");
     refresh();
 
     loop();

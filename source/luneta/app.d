@@ -22,7 +22,7 @@ string[] parseStdin()
 void delegate() loop(fuzzyFn fzy, ref string result)
 {
     const printFn[] printers = [
-    &printMatches, &printSelection, &printTotalMatches, &printCursor
+        &printMatches, &printSelection, &printTotalMatches, &printCursor
     ];
     return delegate void() {
         auto kp = KeyProcessor();
@@ -33,7 +33,7 @@ void delegate() loop(fuzzyFn fzy, ref string result)
             if (kp.terminate)
             {
                 result = kp.getSelected;
-                break ;
+                break;
             }
             if (kp.dosearch)
             {
@@ -51,9 +51,9 @@ void delegate() loop(fuzzyFn fzy, ref string result)
 
 int main()
 {
-    auto fzy = fuzzy( parseStdin());
+    auto fzy = fuzzy(parseStdin());
     string result;
-    init( loop( fzy, result));
-    writeln( result);
+    init(loop(fzy, result));
+    writeln(result);
     return 0;
 }
