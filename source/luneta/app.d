@@ -19,8 +19,6 @@ string[] parseStdin()
     return lines;
 }
 
-
-
 void delegate() loop(fuzzyFn fzy, ref string result)
 {
     return delegate void() {
@@ -30,6 +28,7 @@ void delegate() loop(fuzzyFn fzy, ref string result)
         {
             kp.getKey();
             clear();
+
             if (kp.terminate)
             {
                 result = kp.getSelected;
