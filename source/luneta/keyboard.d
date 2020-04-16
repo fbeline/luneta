@@ -81,12 +81,12 @@ struct KeyProcessor
                 pattern = pattern[0 .. pattern.length - 1];
             break;
         case KEY_DOWN:
-            selected = min(getWindowSize()-3, selected + 1);
+            selected = min(getWindowSize() - 3, selected + 1);
             dosearch = false;
             break;
         case KEY_UP:
             immutable yLimit = max(0, getWindowSize() - matches.length.to!int - 2);
-            selected = max( yLimit, selected - 1);
+            selected = max(yLimit, selected - 1);
             dosearch = false;
             break;
         default:
