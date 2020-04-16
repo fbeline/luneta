@@ -11,7 +11,7 @@ alias printFn = void function(KeyProcessor);
 
 void printMatches(KeyProcessor kp)
 {
-    immutable maxLines = getWindowSize() - 2;
+    const maxLines = getWindowSize() - 2;
     void printLine(int line, FuzzyResult m)
     {
         auto indexes = m.matches.dup;

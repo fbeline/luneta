@@ -2,6 +2,7 @@ module luneta.keyboard;
 
 import std.conv;
 import std.algorithm;
+import std.array;
 import deimos.ncurses.curses;
 import luneta.window;
 import fuzzyd.core;
@@ -37,10 +38,11 @@ struct Key
 struct KeyProcessor
 {
     int selected;
+    string[] input;
     string pattern;
     FuzzyResult[] allMatches;
     FuzzyResult[] matches;
-    bool dosearch;
+    bool dosearch = true;
     bool terminate = false;
     Key key = Key();
 
@@ -77,7 +79,7 @@ struct KeyProcessor
         switch (key.key)
         {
         case KEY_BACKSPACE:
-            if (pattern.length > 0)
+            if (!pattern.empty)
                 pattern = pattern[0 .. $ - 1];
             break;
         case KEY_DOWN:
