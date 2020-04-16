@@ -1,5 +1,5 @@
 import std.stdio;
-import std.string : toStringz, strip;
+import std.string;
 import std.conv;
 import std.typecons;
 import std.algorithm;
@@ -39,7 +39,7 @@ void delegate() loop(fuzzyFn fzy, ref string result)
             {
                 kp.allMatches = fzy(kp.pattern);
                 kp.matches = kp.allMatches.filter!(m => m.score > 0).array();
-                kp.selected = luneta.printers.MAX_PRINT - 1;
+                kp.selected = getWindowSize()-3;
             }
             foreach (fn; printers)
                 fn(kp);
