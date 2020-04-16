@@ -15,17 +15,18 @@ void printMatches(KeyProcessor kp)
 
     void printLine(int line, FuzzyResult m)
     {
+        auto indexes = m.matches.dup;
         for (int i; i < m.value.length; i++)
         {
-            if (m.matches.canFind(i))
+            if (indexes.removeKey( i) > 0)
             {
-                attron(A_BOLD);
-                mvprintw(line, i + 2, toStringz(m.value[i].to!string));
-                attroff(A_BOLD);
+                attron( A_BOLD);
+                mvprintw( line, i + 2, toStringz( m.value[i].to!string));
+                attroff( A_BOLD);
             }
             else
             {
-                mvprintw(line, i + 2, toStringz(m.value[i].to!string));
+                mvprintw( line, i + 2, toStringz( m.value[i].to!string));
             }
         }
     }
