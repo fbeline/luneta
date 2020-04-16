@@ -35,16 +35,25 @@ struct Key
     }
 }
 
-struct KeyProcessor
+class KeyProcessor
 {
+    fuzzyFn fuzzy;
     int selected;
     string[] input;
     string pattern;
-    FuzzyResult[] allMatches;
+    FuzzyResult[] all;
     FuzzyResult[] matches;
-    bool dosearch = true;
-    bool terminate = false;
-    Key key = Key();
+    bool dosearch;
+    bool terminate;
+    Key key;
+
+    this(fuzzyFn fuzzy) {
+        this.key = Key();
+        this.dosearch = true;
+        this.terminate = false;
+        this.fuzzy = fuzzy;
+        search;
+    }
 
     string getSelected()
     {
@@ -74,7 +83,7 @@ struct KeyProcessor
         }
     }
 
-    void specialHanlder()
+    private void specialHanlder()
     {
         switch (key.key)
         {
@@ -94,5 +103,14 @@ struct KeyProcessor
         default:
             dosearch = false;
         }
+    }
+
+    void search()
+    {
+        if (!dosearch) return;
+
+        all = fuzzy(pattern);
+        matches = pattern.empty ? all : all.filter!(m => m.score > 0).array();
+        selected = getWindowSize() - 3;
     }
 }

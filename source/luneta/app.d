@@ -19,15 +19,7 @@ string[] parseStdin()
     return lines;
 }
 
-void maybesearch(fuzzyFn fzy, ref KeyProcessor kp)
-{
-    if (!kp.dosearch) return;
 
-    kp.allMatches = fzy(kp.pattern);
-    kp.matches = kp.pattern.empty ? kp.allMatches
-        : kp.allMatches.filter!(m => m.score > 0).array();
-    kp.selected = getWindowSize() - 3;
-}
 
 void delegate() loop(fuzzyFn fzy, ref string result)
 {
@@ -35,8 +27,7 @@ void delegate() loop(fuzzyFn fzy, ref string result)
         &printMatches, &printSelection, &printTotalMatches, &printCursor
     ];
     return delegate void() {
-        auto kp = KeyProcessor();
-        maybesearch(fzy, kp);
+        auto kp = new KeyProcessor(fzy);
         foreach (fn; printers) fn(kp);
         do
         {
@@ -48,7 +39,7 @@ void delegate() loop(fuzzyFn fzy, ref string result)
                 break;
             }
 
-            maybesearch(fzy, kp);
+            kp.search;
             foreach (fn; printers)
                 fn(kp);
             refresh();
