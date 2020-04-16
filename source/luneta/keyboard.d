@@ -85,8 +85,8 @@ struct KeyProcessor
             dosearch = false;
             break;
         case KEY_UP:
-            immutable yLimit = MAX_PRINT - matches.length.to!int;
-            selected = max(yLimit, selected - 1);
+            immutable yLimit = max( 0, MAX_PRINT - matches.length.to!int);
+            selected = max( yLimit, selected - 1);
             dosearch = false;
             break;
         default:
