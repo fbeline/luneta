@@ -78,7 +78,7 @@ struct KeyProcessor
         {
         case KEY_BACKSPACE:
             if (pattern.length > 0)
-                pattern = pattern[0 .. pattern.length - 1];
+                pattern = pattern[0 .. $ - 1];
             break;
         case KEY_DOWN:
             selected = min(getWindowSize() - 3, selected + 1);
