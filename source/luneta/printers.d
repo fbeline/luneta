@@ -70,3 +70,13 @@ void printCursor(KeyProcessor kp)
 {
     mvprintw(getWindowSize - 1, 0, "> " ~ kp.pattern);
 }
+
+void printAll(KeyProcessor kp)
+{
+    const printFn[] printers = [
+        &printMatches, &printSelection, &printTotalMatches, &printCursor
+    ];
+
+    foreach (fn; printers)
+        fn(kp);
+}

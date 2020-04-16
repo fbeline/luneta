@@ -23,12 +23,9 @@ string[] parseStdin()
 
 void delegate() loop(fuzzyFn fzy, ref string result)
 {
-    const printFn[] printers = [
-        &printMatches, &printSelection, &printTotalMatches, &printCursor
-    ];
     return delegate void() {
         auto kp = new KeyProcessor(fzy);
-        foreach (fn; printers) fn(kp);
+        printAll(kp);
         do
         {
             kp.getKey();
@@ -40,9 +37,8 @@ void delegate() loop(fuzzyFn fzy, ref string result)
             }
 
             kp.search;
-            foreach (fn; printers)
-                fn(kp);
-            refresh();
+            printAll(kp);
+            refresh;
         }
         while (kp.key.type != KeyType.UNKOWN);
     };
