@@ -56,6 +56,7 @@ public:
         this._dosearch = true;
         this._terminate = false;
         this._fuzzy = fuzzy;
+        this.pattern = "";
         search;
     }
 
@@ -94,10 +95,22 @@ public:
         return _cursorx;
     }
 
+    private final void cursorx(int x) @property
+    {
+       _cursorx = max(0, x);
+    }
+
     final string getSelected()
     {
         immutable index = getWindowSize() - _selected - 3;
         return matches[index].value;
+    }
+
+    private final void buildPattern()
+    {
+        string pre = pattern[0..cursorx];
+        string suf = _cursorx < pattern.length ? pattern[cursorx..$] : "";
+        pattern = pre ~ _key.key.to!string ~ suf;
     }
 
     final void getKey()
@@ -114,11 +127,11 @@ public:
                 break;
             case 21:
                 pattern = "";
-                _cursorx = 0;
+                cursorx = 0;
                 break;
             default:
-                pattern ~= to!char(_key.key);
-                _cursorx++;
+                buildPattern;
+                cursorx = cursorx + 1;
             }
         }
         else if (_key.type is KeyType.FUNCTION_KEY)
@@ -135,7 +148,7 @@ public:
             if (!pattern.empty)
             {
                 pattern = pattern[0 .. $ - 1];
-                _cursorx = max(0, _cursorx-1);
+                cursorx = cursorx - 1;
             }
             break;
         case KEY_DOWN:
@@ -148,10 +161,10 @@ public:
             _dosearch = false;
             break;
         case KEY_LEFT:
-            _cursorx = max(0, _cursorx-1);
+            cursorx = cursorx - 1;
             break;
         case KEY_RIGHT:
-            _cursorx = min(pattern.length, _cursorx+1);
+            cursorx = min(pattern.length, cursorx+1);
             break;
         default:
             _dosearch = false;
