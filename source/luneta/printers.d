@@ -59,7 +59,7 @@ void printSelection(KeyProcessor kp)
 
 void printTotalMatches(KeyProcessor kp)
 {
-    auto str = kp.matches.length.to!string ~ "/" ~ kp.allMatches.length.to!string;
+    auto str = kp.matches.length.to!string ~ "/" ~ kp.all.length.to!string;
 
     attron(A_BOLD);
     mvprintw(getWindowSize - 2, 1, str);
@@ -69,4 +69,14 @@ void printTotalMatches(KeyProcessor kp)
 void printCursor(KeyProcessor kp)
 {
     mvprintw(getWindowSize - 1, 0, "> " ~ kp.pattern);
+}
+
+void printAll(KeyProcessor kp)
+{
+    const printFn[] printers = [
+        &printMatches, &printSelection, &printTotalMatches, &printCursor
+    ];
+
+    foreach (fn; printers)
+        fn(kp);
 }

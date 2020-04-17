@@ -28,7 +28,6 @@ void init(void delegate() loop)
     noecho;
     keypad(stdscr, true);
 
-    mvprintw(getWindowSize - 1, 0, "> ");
     refresh();
 
     loop();
