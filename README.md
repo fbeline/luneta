@@ -25,6 +25,9 @@ ps -aux | luneta
 ```
 ... enhance any script with `luneta`
 
+## Requirements
+It should work on any ANSI/POSIX-conforming unix.
+
 ## Building
 Prerequisites: 
 - [dmd](https://dlang.org/download.html)
