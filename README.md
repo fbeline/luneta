@@ -11,3 +11,19 @@
 
 
 under construction...
+
+
+## Building
+Prerequisites: 
+- [dmd](https://dlang.org/download.html)
+- [dub](https://code.dlang.org/download)
+- ncurses
+
+```bash
+git clone https://github.com/fbeline/luneta
+cd luneta
+dub build
+```
+
+License
+MIT
