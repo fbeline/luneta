@@ -77,6 +77,10 @@ void printAll(KeyProcessor kp)
         &printMatches, &printSelection, &printTotalMatches, &printCursor
     ];
 
+    clear;
+
     foreach (fn; printers)
         fn(kp);
+
+    refresh;
 }

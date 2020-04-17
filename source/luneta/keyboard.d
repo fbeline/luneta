@@ -94,13 +94,15 @@ class KeyProcessor
 
         if (_key.type is KeyType.WIDE_CHARACTER)
         {
-            if (_key.key is 10)
-            {
-                _terminate = true;
-            }
-            else
-            {
-                pattern ~= to!char(_key.key);
+            switch(_key.key) {
+                case 10:
+                    _terminate = true;
+                    break;
+                case 21:
+                    pattern = "";
+                    break;
+                default:
+                    pattern ~= to!char(_key.key);
             }
         }
         else if (_key.type is KeyType.FUNCTION_KEY)

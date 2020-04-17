@@ -26,18 +26,14 @@ void delegate() loop(fuzzyFn fzy, ref string result)
         printAll(kp);
         do
         {
-            kp.getKey();
-            clear();
-
+            kp.getKey;
             if (kp.terminate)
             {
                 result = kp.getSelected;
                 break;
             }
-
             kp.search;
             printAll(kp);
-            refresh;
         }
         while (kp.key.type != KeyType.UNKOWN);
     };
