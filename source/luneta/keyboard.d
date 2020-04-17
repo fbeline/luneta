@@ -132,6 +132,12 @@ public:
             case 10:
                 _terminate = true;
                 break;
+            case 1:
+                cursorx = 0;
+                break;
+            case 5:
+                cursorx = pattern.length.to!int;
+                break;
             case 21:
                 pattern = "";
                 cursorx = 0;
