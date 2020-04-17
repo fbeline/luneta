@@ -46,7 +46,6 @@ private:
     bool _terminate;
     Key _key;
 
-
 public:
     string pattern;
 
@@ -97,7 +96,7 @@ public:
 
     private final void cursorx(int x) @property
     {
-       _cursorx = max(0, x);
+        _cursorx = max(0, x);
     }
 
     final string getSelected()
@@ -114,9 +113,10 @@ public:
 
     private final void backspace()
     {
-        if (pattern.empty) return;
+        if (pattern.empty)
+            return;
 
-        pattern.replaceInPlace(cursorx-1, cursorx, "");
+        pattern.replaceInPlace(cursorx - 1, cursorx, "");
         cursorx = cursorx - 1;
     }
 
@@ -127,32 +127,15 @@ public:
 
         if (_key.type is KeyType.WIDE_CHARACTER)
         {
-            switch (_key.key)
-            {
-            case 10:
-                _terminate = true;
-                break;
-            case 1:
-                cursorx = 0;
-                break;
-            case 5:
-                cursorx = pattern.length.to!int;
-                break;
-            case 21:
-                pattern = "";
-                cursorx = 0;
-                break;
-            default:
-                buildPattern;
-            }
+            wideHandler();
         }
         else if (_key.type is KeyType.FUNCTION_KEY)
         {
-            specialHanlder();
+            specialHandler();
         }
     }
 
-    private final void specialHanlder()
+    private final void specialHandler()
     {
         switch (_key.key)
         {
@@ -172,10 +155,32 @@ public:
             cursorx = cursorx - 1;
             break;
         case KEY_RIGHT:
-            cursorx = min(pattern.length, cursorx+1);
+            cursorx = min(pattern.length, cursorx + 1);
             break;
         default:
             _dosearch = false;
+        }
+    }
+
+    private final void wideHandler()
+    {
+        switch (_key.key)
+        {
+        case 10:
+            _terminate = true;
+            break;
+        case 1:
+            cursorx = 0;
+            break;
+        case 5:
+            cursorx = pattern.length.to!int;
+            break;
+        case 21:
+            pattern = "";
+            cursorx = 0;
+            break;
+        default:
+            buildPattern;
         }
     }
 
