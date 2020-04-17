@@ -21,7 +21,7 @@ ls /usr/lib | luneta
 
 Search for an active process:
 ```bash
-ps -aux | luneta
+ps -aux | luneta | awk '{print $2}' | xargs kill -8
 ```
 ... enhance any script with `luneta`
 
