@@ -114,6 +114,7 @@ public:
                 break;
             case 21:
                 pattern = "";
+                _cursorx = 0;
                 break;
             default:
                 pattern ~= to!char(_key.key);
@@ -134,7 +135,7 @@ public:
             if (!pattern.empty)
             {
                 pattern = pattern[0 .. $ - 1];
-                _cursorx--;
+                _cursorx = max(0, _cursorx-1);
             }
             break;
         case KEY_DOWN:
@@ -145,6 +146,12 @@ public:
             const yLimit = max(0, getWindowSize() - matches.length.to!int - 2);
             _selected = max(yLimit, _selected - 1);
             _dosearch = false;
+            break;
+        case KEY_LEFT:
+            _cursorx = max(0, _cursorx-1);
+            break;
+        case KEY_RIGHT:
+            _cursorx = min(pattern.length, _cursorx+1);
             break;
         default:
             _dosearch = false;

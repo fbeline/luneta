@@ -9,6 +9,7 @@ import fuzzyd.core;
 
 alias printFn = void function(KeyProcessor);
 
+private:
 void printMatches(KeyProcessor kp)
 {
     const maxLines = getWindowSize() - 2;
@@ -72,7 +73,8 @@ void printCursor(KeyProcessor kp)
     move(getWindowSize - 1, kp.cursorx + 2);
 }
 
-void printAll(KeyProcessor kp)
+public:
+void print(KeyProcessor kp)
 {
     const printFn[] printers = [
         &printMatches, &printSelection, &printTotalMatches, &printCursor

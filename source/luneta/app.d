@@ -23,7 +23,7 @@ void delegate() loop(fuzzyFn fzy, ref string result)
 {
     return delegate void() {
         auto kp = new KeyProcessor(fzy);
-        printAll(kp);
+        print(kp);
         do
         {
             kp.getKey;
@@ -33,7 +33,7 @@ void delegate() loop(fuzzyFn fzy, ref string result)
                 break;
             }
             kp.search;
-            printAll(kp);
+            print(kp);
         }
         while (kp.key.type != KeyType.UNKOWN);
     };
