@@ -25,6 +25,11 @@ ps -aux | luneta
 ```
 ... enhance any script with `luneta`
 
+## installation
+
+#### Manual
+- See the [building](#building) section.
+
 ## Requirements
 It should work on any ANSI/POSIX-conforming unix.
 
