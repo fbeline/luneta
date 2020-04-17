@@ -108,9 +108,16 @@ public:
 
     private final void buildPattern()
     {
-        string pre = pattern[0..cursorx];
-        string suf = _cursorx < pattern.length ? pattern[cursorx..$] : "";
-        pattern = pre ~ _key.key.to!string ~ suf;
+        pattern.insertInPlace(cursorx, _key.key.to!string);
+        cursorx = cursorx + 1;
+    }
+
+    private final void backspace()
+    {
+        if (pattern.empty) return;
+
+        pattern.replaceInPlace(cursorx-1, cursorx, "");
+        cursorx = cursorx - 1;
     }
 
     final void getKey()
@@ -131,7 +138,6 @@ public:
                 break;
             default:
                 buildPattern;
-                cursorx = cursorx + 1;
             }
         }
         else if (_key.type is KeyType.FUNCTION_KEY)
@@ -145,11 +151,7 @@ public:
         switch (_key.key)
         {
         case KEY_BACKSPACE:
-            if (!pattern.empty)
-            {
-                pattern = pattern[0 .. $ - 1];
-                cursorx = cursorx - 1;
-            }
+            backspace;
             break;
         case KEY_DOWN:
             _selected = min(getWindowSize() - 3, _selected + 1);
