@@ -166,6 +166,7 @@ public:
     {
         switch (_key.key)
         {
+        case 4:
         case 10:
             _terminate = true;
             break;
