@@ -37,19 +37,21 @@ struct Key
 
 class KeyProcessor
 {
-    private:
-        fuzzyFn _fuzzy;
-        FuzzyResult[] _all;
-        FuzzyResult[] _matches;
-        int _selected;
-        bool _dosearch;
-        bool _terminate;
-        Key _key;
+private:
+    fuzzyFn _fuzzy;
+    FuzzyResult[] _all;
+    FuzzyResult[] _matches;
+    int _selected, _cursorx;
+    bool _dosearch;
+    bool _terminate;
+    Key _key;
 
-    public:
-        string pattern;
 
-    this(fuzzyFn fuzzy) {
+public:
+    string pattern;
+
+    this(fuzzyFn fuzzy)
+    {
         this._key = Key();
         this._dosearch = true;
         this._terminate = false;
@@ -57,28 +59,39 @@ class KeyProcessor
         search;
     }
 
-    final FuzzyResult[] matches() @property {
+    final FuzzyResult[] matches() @property
+    {
         return _matches;
     }
 
-    final bool terminate() @property {
-       return _terminate;
+    final bool terminate() @property
+    {
+        return _terminate;
     }
 
-    final bool dosearch() @property {
+    final bool dosearch() @property
+    {
         return _dosearch;
     }
 
-    final int selected() @property {
+    final int selected() @property
+    {
         return _selected;
     }
 
-    final Key key() @property {
+    final Key key() @property
+    {
         return _key;
     }
 
-    final FuzzyResult[] all() @property {
+    final FuzzyResult[] all() @property
+    {
         return _all;
+    }
+
+    final int cursorx() @property
+    {
+        return _cursorx;
     }
 
     final string getSelected()
@@ -94,15 +107,17 @@ class KeyProcessor
 
         if (_key.type is KeyType.WIDE_CHARACTER)
         {
-            switch(_key.key) {
-                case 10:
-                    _terminate = true;
-                    break;
-                case 21:
-                    pattern = "";
-                    break;
-                default:
-                    pattern ~= to!char(_key.key);
+            switch (_key.key)
+            {
+            case 10:
+                _terminate = true;
+                break;
+            case 21:
+                pattern = "";
+                break;
+            default:
+                pattern ~= to!char(_key.key);
+                _cursorx++;
             }
         }
         else if (_key.type is KeyType.FUNCTION_KEY)
@@ -117,14 +132,17 @@ class KeyProcessor
         {
         case KEY_BACKSPACE:
             if (!pattern.empty)
+            {
                 pattern = pattern[0 .. $ - 1];
+                _cursorx--;
+            }
             break;
         case KEY_DOWN:
             _selected = min(getWindowSize() - 3, _selected + 1);
             _dosearch = false;
             break;
         case KEY_UP:
-            immutable yLimit = max(0, getWindowSize() - matches.length.to!int - 2);
+            const yLimit = max(0, getWindowSize() - matches.length.to!int - 2);
             _selected = max(yLimit, _selected - 1);
             _dosearch = false;
             break;
@@ -135,7 +153,8 @@ class KeyProcessor
 
     final void search()
     {
-        if (!_dosearch) return;
+        if (!_dosearch)
+            return;
 
         _all = _fuzzy(pattern);
         _matches = pattern.empty ? _all : _all.filter!(m => m.score > 0).array();

@@ -69,6 +69,7 @@ void printTotalMatches(KeyProcessor kp)
 void printCursor(KeyProcessor kp)
 {
     mvprintw(getWindowSize - 1, 0, "> " ~ kp.pattern);
+    move(getWindowSize - 1, kp.cursorx + 2);
 }
 
 void printAll(KeyProcessor kp)
