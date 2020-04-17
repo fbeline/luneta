@@ -23,7 +23,8 @@ Kill an active process:
 ```bash
 ps -aux | luneta | awk '{print $2}' | xargs kill -8
 ```
-... enhance any script with `luneta`
+
+Check out [/examples](/examples) for more.
 
 ## installation
 
