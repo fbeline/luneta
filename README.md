@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/fbeline/luneta.svg?branch=master)](https://travis-ci.org/fbeline/luneta)
 ![v0.1.0-beta](https://img.shields.io/badge/v0.1.0--beta-blue)
 
-under construction...
+![luneta](https://user-images.githubusercontent.com/5730881/79627815-f864bc80-8111-11ea-9a14-11ab35f1962c.gif)
 
 ## Usage examples
 
