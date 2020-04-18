@@ -1,0 +1,19 @@
+
+  name: luneta
+  version: '0.1.0'
+  summary: Terminal fuzzy search tool.
+  description: |
+    Terminal fuzzy search tool.
+
+  grade: devel
+  confinement: devmode
+  base: core18
+
+  apps:
+    luneta:
+      command: luneta
+    
+  parts:
+    luneta:
+      source: https://github.com/fbeline/luneta/releases/download/v$SNAPCRAFT_PROJECT_VERSION/luneta-$SNAPCRAFT_PROJECT_VERSION-Linux.tar.gz
+      plugin: dump
