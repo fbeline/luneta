@@ -5,8 +5,7 @@
   description: |
     Terminal fuzzy search tool.
 
-  grade: devel
-  confinement: devmode
+  confinement: strict
   base: core18
 
   apps:
@@ -15,7 +14,7 @@
     
   parts:
     luneta:
-      source: https://github.com/fbeline/luneta/releases/download/v$SNAPCRAFT_PROJECT_VERSION/luneta-$SNAPCRAFT_PROJECT_VERSION-Linux.tar.gz
+      source: https://github.com/fbeline/luneta/releases/download/v$SNAPCRAFT_PROJECT_VERSION/luneta-linux-amd64.tar.gz
       plugin: dump
 
   architectures:
