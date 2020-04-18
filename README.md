@@ -1,9 +1,4 @@
-<p align="center">
-  <img width="388" height="70" src="https://user-images.githubusercontent.com/5730881/79414815-01268880-7f82-11ea-8f46-f526f829bd69.png">
-</p>
-
-[![Build Status](https://travis-ci.org/fbeline/luneta.svg?branch=master)](https://travis-ci.org/fbeline/luneta)
-![v0.1.0-beta](https://img.shields.io/badge/v0.1.0--beta-blue)
+# luneta [![Build Status](https://travis-ci.org/fbeline/luneta.svg?branch=master)](https://travis-ci.org/fbeline/luneta) ![v0.1.0-beta](https://img.shields.io/badge/v0.1.0--beta-blue)
 
 <p align="center">
   <img width="80%" src="https://user-images.githubusercontent.com/5730881/79627815-f864bc80-8111-11ea-9a14-11ab35f1962c.gif">
