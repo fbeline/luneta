@@ -35,7 +35,7 @@ Check out [/examples](/examples) for more.
 
 It should work on any ANSI/POSIX-conforming unix.
 
-[Precompiled binaries for linux](/releases)
+[Precompiled binaries for linux](https://github.com/fbeline/luneta/releases)
 
 ### Snap
 
