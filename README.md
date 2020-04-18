@@ -5,46 +5,58 @@
 [![Build Status](https://travis-ci.org/fbeline/luneta.svg?branch=master)](https://travis-ci.org/fbeline/luneta)
 ![v0.1.0-beta](https://img.shields.io/badge/v0.1.0--beta-blue)
 
-![luneta](https://user-images.githubusercontent.com/5730881/79627815-f864bc80-8111-11ea-9a14-11ab35f1962c.gif)
+<p align="center">
+  <img width="80%" src="https://user-images.githubusercontent.com/5730881/79627815-f864bc80-8111-11ea-9a14-11ab35f1962c.gif">
+</p>
 
 ## Usage examples
 
 Pick a command in your shell history:
+
 ```bash
-cat ~/.bash_history | luneta 
+cat ~/.bash_history | luneta
 ```
 
 Execute a program locate in `/usr/bin`:
+
 ```bash
 ls /usr/bin | luneta | xargs -0 bash -c
 ```
 
 Kill an active process:
+
 ```bash
 ps -aux | luneta | awk '{print $2}' | xargs kill -8
 ```
 
 Check out [/examples](/examples) for more.
 
-## installation
+## Installation
 
-#### Manual
-- See the [building](#building) section.
-
-## Requirements
 It should work on any ANSI/POSIX-conforming unix.
 
-## Building
-Prerequisites: 
-- [dmd](https://dlang.org/download.html)
+[Precompiled binaries for linux](/releases)
+
+### Snap
+
+[Linux distributions that support snaps](https://snapcraft.io/docs/installing-snapd).
+
+`snap install --edge luneta`
+
+### Manual Installation
+
+Prerequisites:
+
+- [ldc](https://dlang.org/download.html)
 - [dub](https://code.dlang.org/download)
 - ncurses
 
 ```bash
 git clone https://github.com/fbeline/luneta
 cd luneta
-dub build
+dub build -b release --compiler ldc2
 ```
 
 ## License
+
 MIT
