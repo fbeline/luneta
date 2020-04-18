@@ -2,6 +2,8 @@
 	"authors": [
 		"Felipe Beline Baravieira"
 	],
+	"dflags-ldc": ["-static"],
+	"targetType": "executable",
 	"copyright": "Copyright © 2020, Felipe Beline Baravieira",
 	"dependencies": {
 		"fuzzyd": ">=0.1.4-beta <0.2.0-0",
