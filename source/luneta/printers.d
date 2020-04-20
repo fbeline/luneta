@@ -10,6 +10,7 @@ import fuzzyd.core;
 alias printFn = void function(KeyProcessor);
 
 private:
+
 void printMatches(KeyProcessor kp)
 {
     const maxLines = getWindowSize.height - 2;
@@ -28,6 +29,10 @@ void printMatches(KeyProcessor kp)
             {
                 mvprintw(line, i + 2, m.value[i].to!string);
             }
+        }
+        if (m.value.length > getWindowSize.width)
+        {
+            mvprintw(line, getWindowSize.width-2, "...");
         }
     }
 

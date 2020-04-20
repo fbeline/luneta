@@ -137,7 +137,7 @@ public:
         return _matches;
     }
 
-    final bool terminate() @property
+    final const bool terminate() @property
     {
         return _terminate;
     }
