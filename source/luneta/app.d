@@ -6,6 +6,7 @@ import deimos.ncurses.curses;
 import luneta.printers;
 import luneta.keyboard;
 import luneta.window;
+import luneta.opts;
 
 private:
 string[] parseStdin()
@@ -38,8 +39,19 @@ void delegate() loop(fuzzyFn fzy, ref string result)
 }
 
 public:
-int main()
+int main(string[] args)
 {
+
+    int height;
+    auto helpInformation = getopt(args, "height", &height);
+    luneta.opts.initialize(height);
+
+    if (helpInformation.helpWanted)
+    {
+        defaultGetoptPrinter("usage: luneta [options]", helpInformation.options);
+        return 0;
+    }
+    
     auto fzy = fuzzy(parseStdin());
     string result;
     init(loop(fzy, result));
