@@ -1,15 +1,13 @@
 import std.stdio;
 import std.string;
-import std.conv;
-import std.typecons;
-import std.algorithm;
-import std.array;
+import std.getopt;
 import fuzzyd.core;
 import deimos.ncurses.curses;
 import luneta.printers;
 import luneta.keyboard;
 import luneta.window;
 
+private:
 string[] parseStdin()
 {
     string l;
@@ -39,6 +37,7 @@ void delegate() loop(fuzzyFn fzy, ref string result)
     };
 }
 
+public:
 int main()
 {
     auto fzy = fuzzy(parseStdin());
