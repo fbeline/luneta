@@ -1,6 +1,6 @@
 
   name: luneta
-  version: '0.1.0'
+  version: '0.1.1'
   summary: Terminal fuzzy search tool.
   description: |
     Terminal fuzzy search tool.
