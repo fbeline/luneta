@@ -4,8 +4,7 @@ import std.stdio;
 import std.algorithm;
 import std.string : toStringz;
 import deimos.ncurses.curses;
-
-private const MAX_L = 22;
+import luneta.opts;
 
 /// window size
 struct Wsize
@@ -17,7 +16,7 @@ struct Wsize
 /// get window size
 Wsize getWindowSize()
 {
-    return Wsize(getmaxx(stdscr), min(MAX_L, getmaxy(stdscr)));
+    return Wsize(getmaxx(stdscr), min(luneta.opts.height, getmaxy(stdscr)));
 }
 
 /// ncurses mvprintw wrapper

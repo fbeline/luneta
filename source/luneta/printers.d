@@ -30,7 +30,7 @@ void printMatches(KeyProcessor kp)
                 mvprintw(line, i + 2, m.value[i].to!string);
             }
         }
-        if (m.value.length > getWindowSize.width)
+        if (m.value.length > getWindowSize.width-1)
         {
             mvprintw(line, getWindowSize.width-2, "...");
         }

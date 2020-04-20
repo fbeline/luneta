@@ -1,14 +1,15 @@
 import std.stdio;
 import std.string;
-import std.conv;
-import std.typecons;
-import std.algorithm;
-import std.array;
+import std.getopt;
 import fuzzyd.core;
 import deimos.ncurses.curses;
 import luneta.printers;
 import luneta.keyboard;
 import luneta.window;
+import luneta.opts;
+
+private:
+const string VERSION = "v1.0.0";
 
 string[] parseStdin()
 {
@@ -39,8 +40,29 @@ void delegate() loop(fuzzyFn fzy, ref string result)
     };
 }
 
-int main()
+public:
+int main(string[] args)
 {
+
+    int height;
+    bool _version;
+    auto helpInformation = getopt(
+        args,
+        std.getopt.config.passThrough,
+        "height", "set the maximum window height (number of lines), e.g --height 25", &height,
+        "version|v", "version", &_version);
+    luneta.opts.initialize(height);
+
+    if (helpInformation.helpWanted)
+    {
+        defaultGetoptPrinter("usage: luneta [options]", helpInformation.options);
+        return 0;
+    }
+    if (_version) {
+        writeln(VERSION);
+        return 0;
+    }
+
     auto fzy = fuzzy(parseStdin());
     string result;
     init(loop(fzy, result));

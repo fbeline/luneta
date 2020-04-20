@@ -6,6 +6,14 @@ Luneta is an interactive filter that can be easily composed within any script.
   <img width="80%" src="https://user-images.githubusercontent.com/5730881/79627815-f864bc80-8111-11ea-9a14-11ab35f1962c.gif">
 </p>
 
+## About
+
+- fast.
+- small and portable. (~ 1mb binary)
+- adaptable screen size.
+
+Run `luneta -h` for help.
+
 ## Usage examples
 
 Pick a command in your shell history:
