@@ -43,7 +43,9 @@ int main(string[] args)
 {
 
     int height;
-    auto helpInformation = getopt(args, "height", &height);
+    auto helpInformation = getopt(
+        args,
+        "height", "set the maximum window height (number of lines), e.g --height 25", &height);
     luneta.opts.initialize(height);
 
     if (helpInformation.helpWanted)
@@ -51,7 +53,7 @@ int main(string[] args)
         defaultGetoptPrinter("usage: luneta [options]", helpInformation.options);
         return 0;
     }
-    
+
     auto fzy = fuzzy(parseStdin());
     string result;
     init(loop(fzy, result));
