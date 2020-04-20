@@ -6,7 +6,7 @@
 	"targetType": "executable",
 	"copyright": "Copyright © 2020, Felipe Beline Baravieira",
 	"dependencies": {
-		"fuzzyd": ">=0.1.4-beta <0.2.0-0",
+		"fuzzyd": "1.0.0-beta",
 		"ncurses": "~master"
 	},
 	"description": "Terminal fuzzy search",
