@@ -7,18 +7,21 @@ import deimos.ncurses.curses;
 import luneta.window;
 import fuzzyd.core;
 
+/// pressed character type
 enum KeyType
 {
     FUNCTION_KEY,
     WIDE_CHARACTER,
     UNKOWN
-};
+}
 
+/// read a character from the terminal and classify it's type
 struct Key
 {
-    KeyType type;
-    wint_t key;
+    KeyType type; /// key type
+    wint_t key; /// key value
 
+    /// read a character from the terminal associated with the current or specified window
     void get()
     {
         switch (get_wch(&key))
@@ -45,6 +48,76 @@ private:
     bool _dosearch;
     bool _terminate;
     Key _key;
+
+    void buildPattern()
+    {
+        pattern.insertInPlace(cursorx, _key.key.to!string);
+        cursorx = cursorx + 1;
+    }
+
+    void backspace()
+    {
+        if (pattern.empty)
+            return;
+
+        pattern.replaceInPlace(cursorx - 1, cursorx, "");
+        cursorx = cursorx - 1;
+    }
+
+    void cursorx(int x) @property
+    {
+        _cursorx = max(0, x);
+    }
+
+    void specialHandler()
+    {
+        switch (_key.key)
+        {
+        case KEY_BACKSPACE:
+            backspace;
+            break;
+        case KEY_DOWN:
+            _selected = min(getWindowSize.height - 3, _selected + 1);
+            _dosearch = false;
+            break;
+        case KEY_UP:
+            const yLimit = max(0, getWindowSize.height - matches.length.to!int - 2);
+            _selected = max(yLimit, _selected - 1);
+            _dosearch = false;
+            break;
+        case KEY_LEFT:
+            cursorx = cursorx - 1;
+            break;
+        case KEY_RIGHT:
+            cursorx = min(pattern.length, cursorx + 1);
+            break;
+        default:
+            _dosearch = false;
+        }
+    }
+
+    void wideHandler()
+    {
+        switch (_key.key)
+        {
+        case 4:
+        case 10:
+            _terminate = true;
+            break;
+        case 1:
+            cursorx = 0;
+            break;
+        case 5:
+            cursorx = pattern.length.to!int;
+            break;
+        case 21:
+            pattern = "";
+            cursorx = 0;
+            break;
+        default:
+            buildPattern;
+        }
+    }
 
 public:
     string pattern;
@@ -94,30 +167,10 @@ public:
         return _cursorx;
     }
 
-    private final void cursorx(int x) @property
-    {
-        _cursorx = max(0, x);
-    }
-
     final string getSelected()
     {
-        immutable index = getWindowSize() - _selected - 3;
+        immutable index = getWindowSize.height - _selected - 3;
         return matches[index].value;
-    }
-
-    private final void buildPattern()
-    {
-        pattern.insertInPlace(cursorx, _key.key.to!string);
-        cursorx = cursorx + 1;
-    }
-
-    private final void backspace()
-    {
-        if (pattern.empty)
-            return;
-
-        pattern.replaceInPlace(cursorx - 1, cursorx, "");
-        cursorx = cursorx - 1;
     }
 
     final void getKey()
@@ -135,56 +188,6 @@ public:
         }
     }
 
-    private final void specialHandler()
-    {
-        switch (_key.key)
-        {
-        case KEY_BACKSPACE:
-            backspace;
-            break;
-        case KEY_DOWN:
-            _selected = min(getWindowSize() - 3, _selected + 1);
-            _dosearch = false;
-            break;
-        case KEY_UP:
-            const yLimit = max(0, getWindowSize() - matches.length.to!int - 2);
-            _selected = max(yLimit, _selected - 1);
-            _dosearch = false;
-            break;
-        case KEY_LEFT:
-            cursorx = cursorx - 1;
-            break;
-        case KEY_RIGHT:
-            cursorx = min(pattern.length, cursorx + 1);
-            break;
-        default:
-            _dosearch = false;
-        }
-    }
-
-    private final void wideHandler()
-    {
-        switch (_key.key)
-        {
-        case 4:
-        case 10:
-            _terminate = true;
-            break;
-        case 1:
-            cursorx = 0;
-            break;
-        case 5:
-            cursorx = pattern.length.to!int;
-            break;
-        case 21:
-            pattern = "";
-            cursorx = 0;
-            break;
-        default:
-            buildPattern;
-        }
-    }
-
     final void search()
     {
         if (!_dosearch)
@@ -192,6 +195,6 @@ public:
 
         _all = _fuzzy(pattern);
         _matches = pattern.empty ? _all : _all.filter!(m => m.score > 0).array();
-        _selected = getWindowSize() - 3;
+        _selected = getWindowSize.height - 3;
     }
 }

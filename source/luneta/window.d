@@ -7,16 +7,26 @@ import deimos.ncurses.curses;
 
 private const MAX_L = 22;
 
-int getWindowSize()
+/// window size
+struct Wsize
 {
-    return min(MAX_L, getmaxy(stdscr));
+    int width; /// window width
+    int height; /// window height
 }
 
+/// get window size
+Wsize getWindowSize()
+{
+    return Wsize(getmaxx(stdscr), min(MAX_L, getmaxy(stdscr)));
+}
+
+/// ncurses mvprintw wrapper
 void mvprintw(int line, int col, string str)
 {
     deimos.ncurses.curses.mvprintw(line, col, toStringz(str));
 }
 
+/// configure ncurses and start application loop
 void init(void delegate() loop)
 {
     File tty = File("/dev/tty", "r+");

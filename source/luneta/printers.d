@@ -12,7 +12,7 @@ alias printFn = void function(KeyProcessor);
 private:
 void printMatches(KeyProcessor kp)
 {
-    const maxLines = getWindowSize() - 2;
+    const maxLines = getWindowSize.height - 2;
     void printLine(int line, FuzzyResult m)
     {
         auto indexes = m.matches.dup;
@@ -31,7 +31,7 @@ void printMatches(KeyProcessor kp)
         }
     }
 
-    for (int i; i < min(getWindowSize(), kp.matches.length); i++)
+    for (int i; i < min(getWindowSize.height, kp.matches.length); i++)
     {
         immutable int lineNumber = maxLines - i - 1;
         if (lineNumber is kp.selected)
@@ -49,7 +49,7 @@ void printMatches(KeyProcessor kp)
 
 void printSelection(KeyProcessor kp)
 {
-    immutable maxLines = getWindowSize() - 2;
+    immutable maxLines = getWindowSize.height - 2;
 
     attron(A_REVERSE);
     immutable stopLine = max(0, maxLines - kp.matches.length);
@@ -63,17 +63,18 @@ void printTotalMatches(KeyProcessor kp)
     auto str = kp.matches.length.to!string ~ "/" ~ kp.all.length.to!string;
 
     attron(A_BOLD);
-    mvprintw(getWindowSize - 2, 1, str);
+    mvprintw(getWindowSize.height - 2, 1, str);
     attroff(A_BOLD);
 }
 
 void printCursor(KeyProcessor kp)
 {
-    mvprintw(getWindowSize - 1, 0, "> " ~ kp.pattern);
-    move(getWindowSize - 1, kp.cursorx + 2);
+    mvprintw(getWindowSize.height - 1, 0, "> " ~ kp.pattern);
+    move(getWindowSize.height - 1, kp.cursorx + 2);
 }
 
 public:
+/// print all necessary screen elements
 void print(KeyProcessor kp)
 {
     const printFn[] printers = [
