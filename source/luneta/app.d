@@ -9,6 +9,8 @@ import luneta.window;
 import luneta.opts;
 
 private:
+const string VERSION = "v1.0.0";
+
 string[] parseStdin()
 {
     string l;
@@ -43,14 +45,21 @@ int main(string[] args)
 {
 
     int height;
+    bool _version;
     auto helpInformation = getopt(
         args,
-        "height", "set the maximum window height (number of lines), e.g --height 25", &height);
+        std.getopt.config.passThrough,
+        "height", "set the maximum window height (number of lines), e.g --height 25", &height,
+        "version|v", "version", &_version);
     luneta.opts.initialize(height);
 
     if (helpInformation.helpWanted)
     {
         defaultGetoptPrinter("usage: luneta [options]", helpInformation.options);
+        return 0;
+    }
+    if (_version) {
+        writeln(VERSION);
         return 0;
     }
 
