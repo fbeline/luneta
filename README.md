@@ -1,5 +1,7 @@
 # luneta [![Build Status](https://travis-ci.org/fbeline/luneta.svg?branch=master)](https://travis-ci.org/fbeline/luneta) ![v0.1.0-beta](https://img.shields.io/badge/v0.1.0--beta-blue)
 
+Luneta is an interactive filter that can be easily composed within any script.
+
 <p align="center">
   <img width="80%" src="https://user-images.githubusercontent.com/5730881/79627815-f864bc80-8111-11ea-9a14-11ab35f1962c.gif">
 </p>
