@@ -9,7 +9,7 @@
 		"fuzzyd": "1.0.0-beta",
 		"ncurses": "~master"
 	},
-	"description": "Terminal fuzzy search",
+	"description": "Luneta is an interactive filter that can be easily composed within any script.",
 	"license": "MIT",
 	"name": "luneta"
 }
