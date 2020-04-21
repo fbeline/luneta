@@ -5,7 +5,8 @@
   description: |
     Terminal fuzzy search tool.
 
-  confinement: strict
+  grade: stable
+  confinement: classic
   base: core18
 
   apps:
