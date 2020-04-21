@@ -9,7 +9,7 @@ import luneta.window;
 import luneta.opts;
 
 private:
-const string VERSION = "v0.2.0";
+const string VERSION = "v0.2.1";
 
 string[] parseStdin()
 {

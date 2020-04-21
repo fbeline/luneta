@@ -46,7 +46,7 @@ It should work on any ANSI/POSIX-conforming unix.
 
 [Linux distributions that support snaps](https://snapcraft.io/docs/installing-snapd).
 
-`snap install luneta --classic`
+`snap install luneta`
 
 ### Manual Installation
 

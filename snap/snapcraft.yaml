@@ -6,7 +6,6 @@
     Luneta is an interactive filter that can be easily composed within any script.
 
   grade: stable
-  confinement: classic
   base: core18
 
   apps:
