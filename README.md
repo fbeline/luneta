@@ -1,4 +1,4 @@
-# luneta [![Build Status](https://travis-ci.org/fbeline/luneta.svg?branch=master)](https://travis-ci.org/fbeline/luneta) ![v0.2.0](https://img.shields.io/badge/v0.2.0-blue)
+# luneta [![Build Status](https://travis-ci.org/fbeline/luneta.svg?branch=master)](https://travis-ci.org/fbeline/luneta) [![luneta](https://snapcraft.io//luneta/badge.svg)](https://snapcraft.io/luneta)
 
 Luneta is an interactive filter that can be easily composed within any script.
 
