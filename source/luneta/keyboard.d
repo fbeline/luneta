@@ -1,6 +1,8 @@
 module luneta.keyboard;
 
 import std.conv;
+import std.uni;
+import std.range;
 import std.algorithm;
 import std.array;
 import deimos.ncurses.curses;
@@ -38,6 +40,40 @@ struct Key
     }
 }
 
+string insertAt(string str, int index, dchar c)
+{
+    int i;
+    dchar[] result;
+
+    if (index >= str.walkLength)
+        return str ~ c.to!string;
+
+    foreach (s; str.byCodePoint)
+    {
+        if (i is index)
+            result ~= c;
+        result ~= s;
+        i++;
+    }
+
+    return result.to!string;
+}
+
+string deleteAt(string str, int index)
+{
+    int i;
+    dchar[] result;
+
+    foreach (s; str.byCodePoint)
+    {
+        if (i !is index)
+            result ~= s;
+        i++;
+    }
+
+    return result.to!string;
+}
+
 class KeyProcessor
 {
 private:
@@ -51,7 +87,7 @@ private:
 
     void buildPattern()
     {
-        pattern.insertInPlace(cursorx, _key.key.to!string);
+        pattern = pattern.insertAt(cursorx, _key.key);
         cursorx = cursorx + 1;
     }
 
@@ -60,7 +96,7 @@ private:
         if (pattern.empty)
             return;
 
-        pattern.replaceInPlace(cursorx - 1, cursorx, "");
+        pattern = pattern.deleteAt(cursorx-1);
         cursorx = cursorx - 1;
     }
 
@@ -89,7 +125,7 @@ private:
             cursorx = cursorx - 1;
             break;
         case KEY_RIGHT:
-            cursorx = min(pattern.length, cursorx + 1);
+            cursorx = min(pattern.walkLength, cursorx + 1);
             break;
         default:
             _dosearch = false;
@@ -108,7 +144,7 @@ private:
             cursorx = 0;
             break;
         case 5:
-            cursorx = pattern.length.to!int;
+            cursorx = pattern.count.to!int;
             break;
         case 21:
             pattern = "";
@@ -194,6 +230,7 @@ public:
             return;
 
         _all = _fuzzy(pattern);
+        // _all = [];
         _matches = pattern.empty ? _all : _all.filter!(m => m.score > 0).array();
         _selected = getWindowSize.height - 3;
     }
