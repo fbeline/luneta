@@ -31,7 +31,7 @@ git branch | luneta | xargs git checkout
 Kill an active process:
 
 ```bash
-ps -e -o pid,comm | luneta | awk '{print $2}' | xargs pkill
+ps -e -o comm | luneta | xargs pkill
 ```
 
 Check out [/examples](/examples) for more.
