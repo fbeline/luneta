@@ -22,16 +22,16 @@ Pick a command in your shell history:
 cat ~/.bash_history | luneta
 ```
 
-Execute a program locate in `/usr/bin`:
+Checkout a git branch:
 
 ```bash
-ls /usr/bin | luneta | xargs -0 bash -c
+git branch | luneta | xargs git checkout
 ```
 
 Kill an active process:
 
 ```bash
-ps -aux | luneta | awk '{print $2}' | xargs kill -8
+ps -e -o pid,comm | luneta | awk '{print $2}' | xargs pkill
 ```
 
 Check out [/examples](/examples) for more.

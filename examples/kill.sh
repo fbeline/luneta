@@ -1,2 +1,2 @@
 #!/bin/sh
-ps -aux | luneta | awk '{print $2}' | xargs kill -8
+ps -e -o pid,comm | luneta | awk '{print $2}' | xargs pkill
