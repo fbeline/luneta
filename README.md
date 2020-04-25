@@ -36,6 +36,15 @@ ps -e -o pid,comm | luneta | awk '{print $2}' | xargs pkill
 
 Check out [/examples](/examples) for more.
 
+## Keyboard shorcuts
+
+- CTRL + n: next selection
+- CTRL + p: previous selection
+- CTRL + a: beggining of the line
+- CTRL + e: end of the line
+- CTRL + u: erase all the character before and after the cursor
+- CTRL + d: exit
+
 ## Installation
 
 It should work on any ANSI/POSIX-conforming unix.
