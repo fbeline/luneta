@@ -2,6 +2,8 @@ module luneta.printers;
 
 import std.conv;
 import std.algorithm;
+import std.uni;
+import std.string : count;
 import deimos.ncurses.curses;
 import luneta.window : mvprintw, getWindowSize;
 import luneta.keyboard;
@@ -17,22 +19,24 @@ void printMatches(KeyProcessor kp)
     void printLine(int line, FuzzyResult m)
     {
         auto indexes = m.matches.dup;
-        for (int i; i < m.value.length; i++)
+        int i;
+        foreach (c; m.value.byCodePoint)
         {
             if (indexes.removeKey(i) > 0)
             {
                 attron(A_BOLD);
-                mvprintw(line, i + 2, m.value[i].to!string);
+                mvprintw(line, i + 2, c.to!string);
                 attroff(A_BOLD);
             }
             else
             {
-                mvprintw(line, i + 2, m.value[i].to!string);
+                mvprintw(line, i + 2, c.to!string);
             }
+            i++;
         }
-        if (m.value.length > getWindowSize.width-1)
+        if (m.value.count > getWindowSize.width - 1)
         {
-            mvprintw(line, getWindowSize.width-2, "...");
+            mvprintw(line, getWindowSize.width - 2, "...");
         }
     }
 

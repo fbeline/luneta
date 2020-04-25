@@ -1,10 +1,12 @@
 module luneta.keyboard;
 
 import std.conv;
+import std.range;
 import std.algorithm;
 import std.array;
 import deimos.ncurses.curses;
 import luneta.window;
+import luneta.utils;
 import fuzzyd.core;
 
 /// pressed character type
@@ -51,7 +53,7 @@ private:
 
     void buildPattern()
     {
-        pattern.insertInPlace(cursorx, _key.key.to!string);
+        pattern = pattern.insertAt(cursorx, _key.key);
         cursorx = cursorx + 1;
     }
 
@@ -60,7 +62,7 @@ private:
         if (pattern.empty)
             return;
 
-        pattern.replaceInPlace(cursorx - 1, cursorx, "");
+        pattern = pattern.deleteAt(cursorx-1);
         cursorx = cursorx - 1;
     }
 
@@ -89,7 +91,7 @@ private:
             cursorx = cursorx - 1;
             break;
         case KEY_RIGHT:
-            cursorx = min(pattern.length, cursorx + 1);
+            cursorx = min(pattern.walkLength, cursorx + 1);
             break;
         default:
             _dosearch = false;
@@ -108,7 +110,7 @@ private:
             cursorx = 0;
             break;
         case 5:
-            cursorx = pattern.length.to!int;
+            cursorx = pattern.walkLength.to!int;
             break;
         case 21:
             pattern = "";

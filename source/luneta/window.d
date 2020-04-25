@@ -5,6 +5,7 @@ import std.algorithm;
 import std.string : toStringz;
 import deimos.ncurses.curses;
 import luneta.opts;
+import core.stdc.locale;
 
 /// window size
 struct Wsize
@@ -28,6 +29,7 @@ void mvprintw(int line, int col, string str)
 /// configure ncurses and start application loop
 void init(void delegate() loop)
 {
+    setlocale(LC_ALL, "");
     File tty = File("/dev/tty", "r+");
     SCREEN* screen = newterm(null, tty.getFP, tty.getFP);
     screen.set_term;
