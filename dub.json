@@ -6,7 +6,7 @@
 	"targetType": "executable",
 	"copyright": "Copyright © 2020, Felipe Beline Baravieira",
 	"dependencies": {
-		"fuzzyd": "1.0.0-beta",
+		"fuzzyd": "1.1.0-beta",
 		"ncurses": "~master"
 	},
 	"description": "Luneta is an interactive filter that can be easily composed within any script.",
