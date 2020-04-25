@@ -20,7 +20,7 @@ void printMatches(KeyProcessor kp)
     {
         auto indexes = m.matches.dup;
         int i;
-        foreach (c ;m.value.byCodePoint)
+        foreach (c; m.value.byCodePoint)
         {
             if (indexes.removeKey(i) > 0)
             {
@@ -34,9 +34,9 @@ void printMatches(KeyProcessor kp)
             }
             i++;
         }
-        if (m.value.count > getWindowSize.width-1)
+        if (m.value.count > getWindowSize.width - 1)
         {
-            mvprintw(line, getWindowSize.width-2, "...");
+            mvprintw(line, getWindowSize.width - 2, "...");
         }
     }
 
