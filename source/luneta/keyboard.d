@@ -9,6 +9,18 @@ import luneta.window;
 import luneta.utils;
 import fuzzyd.core;
 
+private enum WideKeys
+{
+    ESC = 27,
+    ENTER = 10,
+    CTRL_D = 4,
+    CTRL_A = 1,
+    CTRL_E = 5,
+    CTRL_U = 21,
+    CTRL_N = 14,
+    CTRL_P = 16
+}
+
 /// pressed character type
 enum KeyType
 {
@@ -62,13 +74,26 @@ private:
         if (pattern.empty)
             return;
 
-        pattern = pattern.deleteAt(cursorx-1);
+        pattern = pattern.deleteAt(cursorx - 1);
         cursorx = cursorx - 1;
     }
 
     void cursorx(int x) @property
     {
         _cursorx = max(0, x);
+    }
+
+    void previousSelection()
+    {
+        const yLimit = max(0, getWindowSize.height - matches.length.to!int - 2);
+        _selected = max(yLimit, _selected - 1);
+        _dosearch = false;
+    }
+
+    void nextSelection()
+    {
+        _selected = min(getWindowSize.height - 3, _selected + 1);
+        _dosearch = false;
     }
 
     void specialHandler()
@@ -79,13 +104,10 @@ private:
             backspace;
             break;
         case KEY_DOWN:
-            _selected = min(getWindowSize.height - 3, _selected + 1);
-            _dosearch = false;
+            nextSelection;
             break;
         case KEY_UP:
-            const yLimit = max(0, getWindowSize.height - matches.length.to!int - 2);
-            _selected = max(yLimit, _selected - 1);
-            _dosearch = false;
+            previousSelection;
             break;
         case KEY_LEFT:
             cursorx = cursorx - 1;
@@ -102,19 +124,26 @@ private:
     {
         switch (_key.key)
         {
-        case 4:
-        case 10:
+        case WideKeys.ESC:
+        case WideKeys.CTRL_D:
+        case WideKeys.ENTER:
             _terminate = true;
             break;
-        case 1:
+        case WideKeys.CTRL_A:
             cursorx = 0;
             break;
-        case 5:
+        case WideKeys.CTRL_E:
             cursorx = pattern.walkLength.to!int;
             break;
-        case 21:
+        case WideKeys.CTRL_U:
             pattern = "";
             cursorx = 0;
+            break;
+        case WideKeys.CTRL_N:
+            nextSelection;
+            break;
+        case WideKeys.CTRL_P:
+            previousSelection;
             break;
         default:
             buildPattern;
