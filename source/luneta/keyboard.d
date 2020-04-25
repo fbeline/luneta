@@ -1,12 +1,12 @@
 module luneta.keyboard;
 
 import std.conv;
-import std.uni;
 import std.range;
 import std.algorithm;
 import std.array;
 import deimos.ncurses.curses;
 import luneta.window;
+import luneta.utils;
 import fuzzyd.core;
 
 /// pressed character type
@@ -38,40 +38,6 @@ struct Key
             type = KeyType.UNKOWN;
         }
     }
-}
-
-string insertAt(string str, int index, dchar c)
-{
-    int i;
-    dchar[] result;
-
-    if (index >= str.walkLength)
-        return str ~ c.to!string;
-
-    foreach (s; str.byCodePoint)
-    {
-        if (i is index)
-            result ~= c;
-        result ~= s;
-        i++;
-    }
-
-    return result.to!string;
-}
-
-string deleteAt(string str, int index)
-{
-    int i;
-    dchar[] result;
-
-    foreach (s; str.byCodePoint)
-    {
-        if (i !is index)
-            result ~= s;
-        i++;
-    }
-
-    return result.to!string;
 }
 
 class KeyProcessor
@@ -144,7 +110,7 @@ private:
             cursorx = 0;
             break;
         case 5:
-            cursorx = pattern.count.to!int;
+            cursorx = pattern.walkLength.to!int;
             break;
         case 21:
             pattern = "";
@@ -230,7 +196,6 @@ public:
             return;
 
         _all = _fuzzy(pattern);
-        // _all = [];
         _matches = pattern.empty ? _all : _all.filter!(m => m.score > 0).array();
         _selected = getWindowSize.height - 3;
     }
