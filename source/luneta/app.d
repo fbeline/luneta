@@ -9,7 +9,13 @@ import luneta.window;
 import luneta.opts;
 
 private:
-const string VERSION = "v0.3.1";
+const string VERSION = "v0.3.2";
+
+struct Result
+{
+    string value;
+    int status;
+}
 
 string[] parseStdin()
 {
@@ -20,7 +26,7 @@ string[] parseStdin()
     return lines;
 }
 
-void delegate() loop(fuzzyFn fzy, ref string result)
+void delegate() loop(fuzzyFn fzy, ref Result result)
 {
     return delegate void() {
         auto kp = new KeyProcessor(fzy);
@@ -30,11 +36,12 @@ void delegate() loop(fuzzyFn fzy, ref string result)
             kp.getKey;
             if (kp.terminate is Terminate.OK)
             {
-                result = kp.getSelected;
+                result.value = kp.getSelected;
                 break;
             }
             else if (kp.terminate is Terminate.EXIT)
             {
+                result.status = 1;
                 break;
             }
             kp.search;
@@ -67,8 +74,8 @@ int main(string[] args)
     }
 
     auto fzy = fuzzy(parseStdin());
-    string result;
+    Result result = Result();
     init(loop(fzy, result));
-    writeln(result);
-    return 0;
+    writeln(result.value);
+    return result.status;
 }
