@@ -28,9 +28,13 @@ void delegate() loop(fuzzyFn fzy, ref string result)
         do
         {
             kp.getKey;
-            if (kp.terminate)
+            if (kp.terminate is Terminate.OK)
             {
                 result = kp.getSelected;
+                break;
+            }
+            else if (kp.terminate is Terminate.EXIT)
+            {
                 break;
             }
             kp.search;
@@ -46,11 +50,9 @@ int main(string[] args)
 
     int height;
     bool _version;
-    auto helpInformation = getopt(
-        args,
-        std.getopt.config.passThrough,
-        "height", "set the maximum window height (number of lines), e.g --height 25", &height,
-        "version|v", "version", &_version);
+    auto helpInformation = getopt(args, std.getopt.config.passThrough, "height",
+            "set the maximum window height (number of lines), e.g --height 25",
+            &height, "version|v", "version", &_version);
     luneta.opts.initialize(height);
 
     if (helpInformation.helpWanted)
@@ -58,7 +60,8 @@ int main(string[] args)
         defaultGetoptPrinter("usage: luneta [options]", helpInformation.options);
         return 0;
     }
-    if (_version) {
+    if (_version)
+    {
         writeln(VERSION);
         return 0;
     }

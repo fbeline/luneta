@@ -29,6 +29,13 @@ enum KeyType
     UNKOWN
 }
 
+enum Terminate
+{
+    OK,
+    EXIT,
+    EMPTY
+}
+
 /// read a character from the terminal and classify it's type
 struct Key
 {
@@ -60,7 +67,7 @@ private:
     FuzzyResult[] _matches;
     int _selected, _cursorx;
     bool _dosearch;
-    bool _terminate;
+    Terminate _terminate;
     Key _key;
 
     void buildPattern()
@@ -126,8 +133,10 @@ private:
         {
         case WideKeys.ESC:
         case WideKeys.CTRL_D:
+            _terminate = Terminate.EXIT;
+            break;
         case WideKeys.ENTER:
-            _terminate = true;
+            _terminate = Terminate.OK;
             break;
         case WideKeys.CTRL_A:
             cursorx = 0;
@@ -157,8 +166,8 @@ public:
     {
         this._key = Key();
         this._dosearch = true;
-        this._terminate = false;
         this._fuzzy = fuzzy;
+        this._terminate = Terminate.EMPTY;
         this.pattern = "";
         search;
     }
@@ -168,7 +177,7 @@ public:
         return _matches;
     }
 
-    final const bool terminate() @property
+    final const Terminate terminate() @property
     {
         return _terminate;
     }
