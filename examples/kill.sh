@@ -1,2 +1,5 @@
 #!/bin/sh
-ps -e -o pid,comm | luneta | awk '{print $2}' | xargs pkill
+set -e
+
+name=$(ps -e -o comm | luneta)
+pkill $name
