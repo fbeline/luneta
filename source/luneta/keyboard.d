@@ -8,8 +8,6 @@ import luneta.window;
 import luneta.utils;
 import fuzzyd.core;
 
-import std.stdio;
-
 private enum WideKeys
 {
     ESC = 27,
