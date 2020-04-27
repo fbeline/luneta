@@ -1,22 +1,24 @@
 {
 	"name": "luneta",
+	"description": "Luneta is an interactive filter that can be easily composed within any script.",
 	"authors": [
 		"Felipe Beline Baravieira"
 	],
 	"targetType": "executable",
-	"importPaths": ["source"],
-	"sourcePaths": ["source"],
+	"importPaths": ["source/luneta"],
+	"sourcePaths": ["source/luneta"],
 	"copyright": "Copyright © 2020, Felipe Beline Baravieira",
 	"dependencies": {
 		"fuzzyd": "1.1.1-beta",
 		"ncurses": "~master"
 	},
+	"subConfigurations": {
+		"ncurses": "minimal"
+	},
 	"libs": [
 		"ncurses"
 	],
-	"description": "Luneta is an interactive filter that can be easily composed within any script.",
-	"dflags-ldc": [
-		"-static"
-	],
-	"license": "MIT"
+	"license": "MIT",
+	"lflags": ["-lncurses"],
+	"dflags": ["-static"]
 }
