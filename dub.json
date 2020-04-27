@@ -10,15 +10,10 @@
 	"copyright": "Copyright © 2020, Felipe Beline Baravieira",
 	"dependencies": {
 		"fuzzyd": "1.1.1-beta",
-		"ncurses": "~master"
+		"ncurses": "*"
 	},
 	"subConfigurations": {
 		"ncurses": "minimal"
 	},
-	"libs": [
-		"ncurses"
-	],
-	"license": "MIT",
-	"lflags": ["-lncurses"],
-	"dflags": ["-static"]
+	"license": "MIT"
 }
