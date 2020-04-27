@@ -1,3 +1,5 @@
+module luneta.app;
+
 import std.stdio;
 import std.string;
 import std.getopt;
@@ -9,6 +11,7 @@ import luneta.window;
 import luneta.opts;
 
 private:
+
 const string VERSION = "v0.3.2";
 
 struct Result
@@ -52,30 +55,35 @@ void delegate() loop(fuzzyFn fzy, ref Result result)
 }
 
 public:
-int main(string[] args)
+
+version (unittest) { }
+else
 {
-
-    int height;
-    bool _version;
-    auto helpInformation = getopt(args, std.getopt.config.passThrough, "height",
-            "set the maximum window height (number of lines), e.g --height 25",
-            &height, "version|v", "version", &_version);
-    luneta.opts.initialize(height);
-
-    if (helpInformation.helpWanted)
+    int main(string[] args)
     {
-        defaultGetoptPrinter("usage: luneta [options]", helpInformation.options);
-        return 0;
-    }
-    if (_version)
-    {
-        writeln(VERSION);
-        return 0;
-    }
 
-    auto fzy = fuzzy(parseStdin());
-    Result result = Result();
-    init(loop(fzy, result));
-    writeln(result.value);
-    return result.status;
+        int height;
+        bool _version;
+        auto helpInformation = getopt(args, std.getopt.config.passThrough, "height",
+                "set the maximum window height (number of lines), e.g --height 25",
+                &height, "version|v", "version", &_version);
+        luneta.opts.initialize(height);
+
+        if (helpInformation.helpWanted)
+        {
+            defaultGetoptPrinter("usage: luneta [options]", helpInformation.options);
+            return 0;
+        }
+        if (_version)
+        {
+            writeln(VERSION);
+            return 0;
+        }
+
+        auto fzy = fuzzy(parseStdin());
+        Result result = Result();
+        init(loop(fzy, result));
+        writeln(result.value);
+        return result.status;
+    }
 }
