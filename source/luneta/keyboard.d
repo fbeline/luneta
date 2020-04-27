@@ -287,6 +287,18 @@ unittest
     assert(t._cursorx == 3);
 }
 
+@("On wide character - Insert char at the cursorx position")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "âc";
+    t._cursorx = 1;
+    t._key = Key(KeyType.WIDE_CHARACTER, 98);
+    t.wideHandler;
+    assert(t.pattern == "âbc");
+    assert(t._cursorx == 2);
+}
+
 @("On KEY_RIGHT - Should increment cursorx")
 unittest
 {
