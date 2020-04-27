@@ -4,7 +4,6 @@ import std.conv;
 import std.range;
 import std.algorithm;
 import std.array;
-import deimos.ncurses.curses;
 import luneta.window;
 import luneta.utils;
 import fuzzyd.core;
@@ -237,4 +236,131 @@ public:
         _matches = pattern.empty ? _all : _all.filter!(m => m.score > 0).array();
         _selected = getWindowSize.height - 3;
     }
+}
+
+//----------- tests
+
+@("On wide character - CTRL+A and CTRL+E")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "foobar";
+
+    // cursor at the end of the line
+    t._key = Key(KeyType.WIDE_CHARACTER, WideKeys.CTRL_E);
+    t.wideHandler;
+    assert(t.cursorx == 6);
+
+    // cursor at the beggining of the line
+    t._key = Key(KeyType.WIDE_CHARACTER, WideKeys.CTRL_A);
+    t.wideHandler;
+    assert(t.cursorx == 0);
+}
+
+@("On wide character - Terminate with 0 when ENTER")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t._key = Key(KeyType.WIDE_CHARACTER, WideKeys.ENTER);
+    t.wideHandler;
+    assert(t.terminate == Terminate.OK);
+}
+
+@("On wide character - Terminate with 1 when Ctrl+D or Esc ")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t._key = Key(KeyType.WIDE_CHARACTER, WideKeys.CTRL_D);
+    t.wideHandler;
+    assert(t.terminate == Terminate.EXIT);
+}
+
+@("On wide character - Properly build pattern")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "ab";
+    t._cursorx = 2;
+    t._key = Key(KeyType.WIDE_CHARACTER, 99);
+    t.wideHandler;
+    assert(t.pattern == "abc");
+    assert(t._cursorx == 3);
+}
+
+@("On wide character - Insert char at the cursorx position")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "âc";
+    t._cursorx = 1;
+    t._key = Key(KeyType.WIDE_CHARACTER, 98);
+    t.wideHandler;
+    assert(t.pattern == "âbc");
+    assert(t._cursorx == 2);
+}
+
+@("On KEY_RIGHT - Should increment cursorx")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "foo";
+    t.cursorx = 2;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_RIGHT);
+    t.specialHandler;
+    assert(t.cursorx == 3);
+}
+
+@("On KEY_RIGHT - Cursorx should not be greater than pattern length")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "fôo";
+    t.cursorx = 3;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_RIGHT);
+    t.specialHandler;
+    assert(t.cursorx == 3);
+}
+
+@("On KEY_LEFT - Should decrement cursorx")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "foo";
+    t.cursorx = 3;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_LEFT);
+    t.specialHandler;
+    assert(t.cursorx == 2);
+}
+
+@("On KEY_LEFT - Cursorx should not be less than zero")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "foo";
+    t.cursorx = 0;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_LEFT);
+    t.specialHandler;
+    assert(t.cursorx == 0);
+}
+
+@("On BACKSPACE - cursor at end of line")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "foo";
+    t.cursorx = 3;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_BACKSPACE);
+    t.specialHandler;
+    assert(t.pattern == "fo");
+}
+
+@("On BACKSPACE - cursor at the middle of the pattern")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "bar";
+    t.cursorx = 2;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_BACKSPACE);
+    t.specialHandler;
+    assert(t.pattern == "br");
 }

@@ -4,8 +4,7 @@ import std.conv;
 import std.algorithm;
 import std.uni;
 import std.string : count;
-import deimos.ncurses.curses;
-import luneta.window : mvprintw, getWindowSize;
+import luneta.window;
 import luneta.keyboard;
 import fuzzyd.core;
 

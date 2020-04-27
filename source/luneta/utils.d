@@ -39,3 +39,35 @@ string deleteAt(string str, int index)
 
     return result.to!string;
 }
+
+@("On insertAt")
+unittest {
+    const s = "ãple";
+    const result =  s.insertAt(1, 'p');
+    const expected = "ãpple";
+    assert(expected == result);
+}
+
+@("If index is greater than string length insert char at the end of the string")
+unittest {
+    const s = "oráng";
+    const result =  s.insertAt(20, 'e');
+    const expected = "oránge";
+    assert(expected == result);
+}
+
+@("On deleteAt")
+unittest {
+    const s = "âppple";
+    const result =  s.deleteAt(1);
+    const expected = "âpple";
+    assert(expected == result);
+}
+
+@("Do nothing if index is greater than string length")
+unittest {
+    const s = "órange";
+    const result =  s.deleteAt(16);
+    const expected = "órange";
+    assert(expected == result);
+}
