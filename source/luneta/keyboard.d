@@ -8,6 +8,8 @@ import luneta.window;
 import luneta.utils;
 import fuzzyd.core;
 
+import std.stdio;
+
 private enum WideKeys
 {
     ESC = 27,
@@ -236,4 +238,53 @@ public:
         _matches = pattern.empty ? _all : _all.filter!(m => m.score > 0).array();
         _selected = getWindowSize.height - 3;
     }
+}
+
+//----------- tests
+
+@("On wide character - CTRL+A and CTRL+E")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "foobar";
+
+    // cursor at the end of the line
+    t._key = Key(KeyType.WIDE_CHARACTER, WideKeys.CTRL_E);
+    t.wideHandler;
+    assert(t.cursorx == 6);
+
+    // cursor at the beggining of the line
+    t._key = Key(KeyType.WIDE_CHARACTER, WideKeys.CTRL_A);
+    t.wideHandler;
+    assert(t.cursorx == 0);
+}
+
+@("On wide character - Terminate with 0 when ENTER")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t._key = Key(KeyType.WIDE_CHARACTER, WideKeys.ENTER);
+    t.wideHandler;
+    assert(t.terminate == Terminate.OK);
+}
+
+@("On wide character - Terminate with 1 when Ctrl+D or Esc ")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t._key = Key(KeyType.WIDE_CHARACTER, WideKeys.CTRL_D);
+    t.wideHandler;
+    assert(t.terminate == Terminate.EXIT);
+}
+
+@("On wide character - Properly build pattern")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "ab";
+    t._cursorx = 2;
+    t._key = Key(KeyType.WIDE_CHARACTER, 99);
+    t.wideHandler;
+    assert(t.pattern == "abc");
+    assert(t._cursorx == 3);
 }
