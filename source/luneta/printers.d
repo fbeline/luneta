@@ -57,13 +57,10 @@ void printMatches(KeyProcessor kp)
 
 void printSelection(KeyProcessor kp)
 {
-    immutable maxLines = getWindowSize.height - 2;
-
-    attron(A_REVERSE);
-    immutable stopLine = max(0, maxLines - kp.matches.length);
-    if (kp.matches.length > 0)
-        mvprintw(kp.selected, 0, "> ");
-    attroff(A_REVERSE);
+    WITH_COLOR(delegate void() {
+        if (kp.matches.length > 0)
+            mvaddch(kp.selected, 0, '>');
+    });
 }
 
 void printTotalMatches(KeyProcessor kp)
