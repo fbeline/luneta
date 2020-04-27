@@ -31,8 +31,7 @@ void init(void delegate() loop)
 {
     setlocale(LC_ALL, "");
     File tty = File("/dev/tty", "r+");
-    SCREEN* screen = newterm(null, tty.getFP, tty.getFP);
-    screen.set_term;
+    newterm(null, tty.getFP, tty.getFP);
     scope (exit)
         endwin();
     cbreak;
