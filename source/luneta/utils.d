@@ -1,6 +1,5 @@
 module luneta.utils;
 
-import std.stdio;
 import std.uni;
 import std.conv;
 import std.range;
@@ -43,33 +42,32 @@ string deleteAt(string str, int index)
 
 @("On insertAt")
 unittest {
-    const s = "aple";
+    const s = "ãple";
     const result =  s.insertAt(1, 'p');
-    const expected = "apple";
+    const expected = "ãpple";
     assert(expected == result);
 }
 
 @("If index is greater than string length insert char at the end of the string")
 unittest {
-    const s = "orang";
+    const s = "oráng";
     const result =  s.insertAt(20, 'e');
-    const expected = "orange";
+    const expected = "oránge";
     assert(expected == result);
 }
 
 @("On deleteAt")
 unittest {
-    const s = "appple";
+    const s = "âppple";
     const result =  s.deleteAt(1);
-    const expected = "apple";
+    const expected = "âpple";
     assert(expected == result);
 }
 
 @("Do nothing if index is greater than string length")
 unittest {
-    const s = "orange";
+    const s = "órange";
     const result =  s.deleteAt(16);
-    const expected = "orange";
-    writeln(result);
+    const expected = "órange";
     assert(expected == result);
 }
