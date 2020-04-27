@@ -288,3 +288,69 @@ unittest
     assert(t.pattern == "abc");
     assert(t._cursorx == 3);
 }
+
+@("On KEY_RIGHT - Should increment cursorx")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "foo";
+    t.cursorx = 2;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_RIGHT);
+    t.specialHandler;
+    assert(t.cursorx == 3);
+}
+
+@("On KEY_RIGHT - Cursorx should not be greater than pattern length")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "fôo";
+    t.cursorx = 3;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_RIGHT);
+    t.specialHandler;
+    assert(t.cursorx == 3);
+}
+
+@("On KEY_LEFT - Should decrement cursorx")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "foo";
+    t.cursorx = 3;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_LEFT);
+    t.specialHandler;
+    assert(t.cursorx == 2);
+}
+
+@("On KEY_LEFT - Cursorx should not be less than zero")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "foo";
+    t.cursorx = 0;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_LEFT);
+    t.specialHandler;
+    assert(t.cursorx == 0);
+}
+
+@("On BACKSPACE - cursor at end of line")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "foo";
+    t.cursorx = 3;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_BACKSPACE);
+    t.specialHandler;
+    assert(t.pattern == "fo");
+}
+
+@("On BACKSPACE - cursor at the middle of the pattern")
+unittest
+{
+    auto t = new KeyProcessor(fuzzy([]));
+    t.pattern = "bar";
+    t.cursorx = 2;
+    t._key = Key(KeyType.FUNCTION_KEY, KEY_BACKSPACE);
+    t.specialHandler;
+    assert(t.pattern == "br");
+}
