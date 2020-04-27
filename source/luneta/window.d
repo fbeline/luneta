@@ -3,7 +3,7 @@ module luneta.window;
 import std.stdio;
 import std.algorithm;
 import std.string : toStringz;
-import deimos.ncurses.curses;
+public import deimos.ncurses.curses;
 import luneta.opts;
 import core.stdc.locale;
 

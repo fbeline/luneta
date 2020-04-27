@@ -4,7 +4,6 @@ import std.conv;
 import std.range;
 import std.algorithm;
 import std.array;
-import deimos.ncurses.curses;
 import luneta.window;
 import luneta.utils;
 import fuzzyd.core;

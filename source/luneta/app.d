@@ -4,7 +4,6 @@ import std.stdio;
 import std.string;
 import std.getopt;
 import fuzzyd.core;
-import deimos.ncurses.curses;
 import luneta.printers;
 import luneta.keyboard;
 import luneta.window;
