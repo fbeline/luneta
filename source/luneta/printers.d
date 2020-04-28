@@ -21,15 +21,29 @@ void printMatches(KeyProcessor kp)
         int i;
         foreach (c; m.value.byCodePoint)
         {
-            if (indexes.removeKey(i) > 0)
+            const isMatch = indexes.removeKey(i) > 0;
+            const isSelected = line is kp.selected;
+            if (isMatch && isSelected)
+            {
+                withColor(Colors.SELECTED_MATCH, delegate void() {
+                    mvaddch(line, i + 2, c);
+                });
+            }
+            else if (isSelected)
+            {
+                withColor(Colors.SELECTED, delegate void() {
+                    mvaddch(line, i + 2, c);
+                });
+            }
+            else if (isMatch)
             {
                 withColor(Colors.MATCH, delegate void() {
-                    mvaddch(line, i + 3, c);
+                    mvaddch(line, i + 2, c);
                 });
             }
             else
             {
-                mvaddch(line, i + 3, c);
+                mvaddch(line, i + 2, c);
             }
             i++;
         }
@@ -42,25 +56,18 @@ void printMatches(KeyProcessor kp)
     for (int i; i < min(getWindowSize.height, kp.matches.length); i++)
     {
         immutable int lineNumber = maxLines - i - 1;
-        if (lineNumber is kp.selected)
-        {
-            attron(A_BOLD);
-            printLine(lineNumber, kp.matches[i]);
-            attroff(A_BOLD);
-        }
-        else
-        {
-            printLine(lineNumber, kp.matches[i]);
-        }
+        printLine(lineNumber, kp.matches[i]);
     }
 }
 
 void printSelection(KeyProcessor kp)
 {
+    attron(A_BOLD);
     withColor(Colors.ARROW, delegate void() {
         if (kp.matches.length > 0)
             mvprintw(kp.selected, 0, "> ");
     });
+    attroff(A_BOLD);
 }
 
 void printTotalMatches(KeyProcessor kp)
