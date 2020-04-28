@@ -59,11 +59,12 @@ int main(string[] args)
 {
 
     int height;
-    bool _version;
+    bool _version, colorSupport;
     auto helpInformation = getopt(args, std.getopt.config.passThrough, "height",
-            "set the maximum window height (number of lines), e.g --height 25",
-            &height, "version|v", "version", &_version);
-    luneta.opts.initialize(height);
+            "set the maximum window height (number of lines), e.g --height 25", &height,
+            "version|v", "version", &_version,
+            "no-color", "disable colors", &colorSupport);
+    luneta.opts.initialize(height, !colorSupport);
 
     if (helpInformation.helpWanted)
     {

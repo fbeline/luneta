@@ -1,11 +1,13 @@
 module luneta.opts;
 
 static int height = 22;  /// window height
+static bool colorSupport = true;
 
 /// initialize application options
-void initialize(int _height) {
+void initialize(int _height, bool _colorSupport) {
     if (_height > 0)
         height = _height;
+    colorSupport = _colorSupport;
 }
 
 @("On application options initialization")

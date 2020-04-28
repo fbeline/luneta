@@ -23,13 +23,13 @@ void printMatches(KeyProcessor kp)
         {
             if (indexes.removeKey(i) > 0)
             {
-                attron(A_BOLD);
-                mvprintw(line, i + 2, c.to!string);
-                attroff(A_BOLD);
+                withColor(Colors.MATCH, delegate void() {
+                    mvaddch(line, i + 3, c);
+                });
             }
             else
             {
-                mvprintw(line, i + 2, c.to!string);
+                mvaddch(line, i + 3, c);
             }
             i++;
         }
@@ -44,9 +44,9 @@ void printMatches(KeyProcessor kp)
         immutable int lineNumber = maxLines - i - 1;
         if (lineNumber is kp.selected)
         {
-            attron(A_REVERSE);
+            attron(A_BOLD);
             printLine(lineNumber, kp.matches[i]);
-            attroff(A_REVERSE);
+            attroff(A_BOLD);
         }
         else
         {
@@ -59,7 +59,7 @@ void printSelection(KeyProcessor kp)
 {
     withColor(Colors.ARROW, delegate void() {
         if (kp.matches.length > 0)
-            mvaddch(kp.selected, 0, '>');
+            mvprintw(kp.selected, 0, "> ");
     });
 }
 

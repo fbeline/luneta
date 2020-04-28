@@ -10,7 +10,7 @@ import core.stdc.locale;
 /// Terminal colors
 enum Colors
 {
-    SELECTION,
+    SELECTED,
     MATCH,
     ARROW
 }
@@ -58,17 +58,27 @@ void init(void delegate() loop)
 
 void withColor(Colors color, void delegate() fn)
 {
-    attron(COLOR_PAIR(color));
-    fn();
-    attroff(COLOR_PAIR(color));
+    if (colorSupport)
+    {
+        attron(COLOR_PAIR(color));
+        fn();
+        attroff(COLOR_PAIR(color));
+    }
+    else
+    {
+        fn();
+    }
 }
 
 private:
 
 void startColor()
 {
+    if (!colorSupport)
+        return;
+
     start_color();
-    init_pair(Colors.SELECTION, COLOR_WHITE, COLOR_BLACK);
-    init_pair(Colors.MATCH, COLOR_WHITE, COLOR_BLUE);
-    init_pair(Colors.ARROW, COLOR_WHITE, COLOR_RED);
+    init_pair(Colors.SELECTED, COLOR_GREEN, COLOR_BLUE);
+    init_pair(Colors.MATCH, COLOR_BLUE, COLOR_BLACK);
+    init_pair(Colors.ARROW, COLOR_RED, COLOR_RED);
 }
