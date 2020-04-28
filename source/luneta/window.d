@@ -80,8 +80,9 @@ void startColor()
         return;
 
     start_color();
-    init_pair(Colors.SELECTED, COLOR_BLACK, COLOR_WHITE);
-    init_pair(Colors.SELECTED_MATCH, COLOR_BLUE, COLOR_WHITE);
-    init_pair(Colors.MATCH, COLOR_BLUE, COLOR_BLACK);
-    init_pair(Colors.ARROW, COLOR_RED, COLOR_WHITE);
+    use_default_colors();
+    init_pair(Colors.SELECTED, COLOR_WHITE, COLOR_BLACK);
+    init_pair(Colors.SELECTED_MATCH, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(Colors.MATCH, COLOR_YELLOW, -1);
+    init_pair(Colors.ARROW, COLOR_RED, COLOR_BLACK);
 }
