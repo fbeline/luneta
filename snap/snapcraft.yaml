@@ -1,6 +1,6 @@
 
   name: luneta
-  version: '0.4.0'
+  version: '0.4.1'
   summary: Terminal fuzzy finder
   description: |
     Luneta is an interactive filter that can be easily composed within any script.
@@ -17,7 +17,7 @@
       source: https://github.com/fbeline/luneta/releases/download/v$SNAPCRAFT_PROJECT_VERSION/luneta-linux-amd64.tar.gz
       plugin: dump
       stage-packages:
-        - libncurses5
+        - libncursesw5
 
   architectures:
     - build-on: amd64
