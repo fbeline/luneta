@@ -18,9 +18,16 @@ void printMatches(KeyProcessor kp)
 {
     const maxLines = getWindowSize.height - 2;
 
-    void print(Colors color, int line, int i, dchar c)
+    void print(Tuple!(bool, Colors)[] printOptions, int line, int i, dchar c)
     {
-        withColor(color, delegate void() { mvaddch(line, i + 2, c); });
+        foreach (p; printOptions)
+        {
+            if (p[0])
+            {
+                withColor(p[1], delegate void() { mvaddch(line, i + 2, c); });
+                break;
+            }
+        }
     }
 
     void printLine(int line, FuzzyResult m)
@@ -34,18 +41,11 @@ void printMatches(KeyProcessor kp)
             bool isSelectedMatch = isMatch && isSelected;
             Tuple!(bool, Colors)[4] printOptions = [
                 tuple(isSelectedMatch, Colors.SELECTED_MATCH),
-                tuple(isSelected, Colors.SELECTED),
-                tuple(isMatch, Colors.MATCH),
-                tuple(true, Colors.DEFAULT)
+                tuple(isSelected, Colors.SELECTED), tuple(isMatch,
+                        Colors.MATCH), tuple(true, Colors.DEFAULT)
             ];
 
-            foreach (p; printOptions)
-            {
-                if (p[0]) {
-                    print(p[1], line, i, c);
-                    break;
-                }
-            }
+            print(printOptions, line, i, c);
 
             i++;
         }
