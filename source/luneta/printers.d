@@ -1,6 +1,8 @@
 module luneta.printers;
 
 import std.conv;
+import std.typecons;
+import std.range;
 import std.algorithm;
 import std.uni;
 import std.string : count;
@@ -15,39 +17,39 @@ private:
 void printMatches(KeyProcessor kp)
 {
     const maxLines = getWindowSize.height - 2;
+
+    void print(Colors color, int line, int i, dchar c)
+    {
+        withColor(color, delegate void() { mvaddch(line, i + 2, c); });
+    }
+
     void printLine(int line, FuzzyResult m)
     {
         auto indexes = m.matches.dup;
         int i;
         foreach (c; m.value.byCodePoint)
         {
-            const isMatch = indexes.removeKey(i) > 0;
-            const isSelected = line is kp.selected;
-            if (isMatch && isSelected)
+            bool isMatch = indexes.removeKey(i) > 0;
+            bool isSelected = line is kp.selected;
+            bool isSelectedMatch = isMatch && isSelected;
+            Tuple!(bool, Colors)[4] printOptions = [
+                tuple(isSelectedMatch, Colors.SELECTED_MATCH),
+                tuple(isSelected, Colors.SELECTED),
+                tuple(isMatch, Colors.MATCH),
+                tuple(true, Colors.DEFAULT)
+            ];
+
+            foreach (p; printOptions)
             {
-                withColor(Colors.SELECTED_MATCH, delegate void() {
-                    mvaddch(line, i + 2, c);
-                });
+                if (p[0]) {
+                    print(p[1], line, i, c);
+                    break;
+                }
             }
-            else if (isSelected)
-            {
-                withColor(Colors.SELECTED, delegate void() {
-                    mvaddch(line, i + 2, c);
-                });
-            }
-            else if (isMatch)
-            {
-                withColor(Colors.MATCH, delegate void() {
-                    mvaddch(line, i + 2, c);
-                });
-            }
-            else
-            {
-                mvaddch(line, i + 2, c);
-            }
+
             i++;
         }
-        if (m.value.count > getWindowSize.width - 1)
+        if (m.value.walkLength > getWindowSize.width - 1)
         {
             mvprintw(line, getWindowSize.width - 2, "...");
         }

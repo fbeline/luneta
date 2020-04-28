@@ -10,7 +10,7 @@ import core.stdc.locale;
 /// Terminal colors
 enum Colors
 {
-    EMPTY,
+    DEFAULT,
     SELECTED,
     SELECTED_MATCH,
     MATCH,
