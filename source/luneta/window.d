@@ -11,7 +11,8 @@ import core.stdc.locale;
 enum Colors
 {
     SELECTION,
-    MATCH
+    MATCH,
+    ARROW
 }
 
 /// window size
@@ -56,11 +57,11 @@ void init(void delegate() loop)
     endwin;
 }
 
-void WITH_COLOR(void delegate() fn)
+void withColor(Colors color, void delegate() fn)
 {
-    attron(COLOR_PAIR(1));
+    attron(COLOR_PAIR(color));
     fn();
-    attroff(COLOR_PAIR(1));
+    attroff(COLOR_PAIR(color));
 }
 
 private:
@@ -68,6 +69,7 @@ private:
 void startColor()
 {
     start_color();
-    init_pair(1, COLOR_RED, COLOR_BLACK);
-    // init_pair(Colors.MATCH, COLOR_WHITE, COLOR_BLUE);
+    init_pair(Colors.SELECTION, COLOR_WHITE, COLOR_BLACK);
+    init_pair(Colors.MATCH, COLOR_WHITE, COLOR_BLUE);
+    init_pair(Colors.ARROW, COLOR_WHITE, COLOR_RED);
 }

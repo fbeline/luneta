@@ -57,7 +57,7 @@ void printMatches(KeyProcessor kp)
 
 void printSelection(KeyProcessor kp)
 {
-    WITH_COLOR(delegate void() {
+    withColor(Colors.ARROW, delegate void() {
         if (kp.matches.length > 0)
             mvaddch(kp.selected, 0, '>');
     });
