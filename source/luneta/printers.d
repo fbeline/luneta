@@ -1,6 +1,8 @@
 module luneta.printers;
 
 import std.conv;
+import std.typecons;
+import std.range;
 import std.algorithm;
 import std.uni;
 import std.string : count;
@@ -15,25 +17,39 @@ private:
 void printMatches(KeyProcessor kp)
 {
     const maxLines = getWindowSize.height - 2;
+
+    void print(Tuple!(bool, Colors)[] printOptions, int line, int i, dchar c)
+    {
+        foreach (p; printOptions)
+        {
+            if (p[0])
+            {
+                withColor(p[1], delegate void() { mvaddch(line, i + 2, c); });
+                break;
+            }
+        }
+    }
+
     void printLine(int line, FuzzyResult m)
     {
         auto indexes = m.matches.dup;
         int i;
         foreach (c; m.value.byCodePoint)
         {
-            if (indexes.removeKey(i) > 0)
-            {
-                attron(A_BOLD);
-                mvprintw(line, i + 2, c.to!string);
-                attroff(A_BOLD);
-            }
-            else
-            {
-                mvprintw(line, i + 2, c.to!string);
-            }
+            bool isMatch = indexes.removeKey(i) > 0;
+            bool isSelected = line is kp.selected;
+            bool isSelectedMatch = isMatch && isSelected;
+            Tuple!(bool, Colors)[4] printOptions = [
+                tuple(isSelectedMatch, Colors.SELECTED_MATCH),
+                tuple(isSelected, Colors.SELECTED), tuple(isMatch,
+                        Colors.MATCH), tuple(true, Colors.DEFAULT)
+            ];
+
+            print(printOptions, line, i, c);
+
             i++;
         }
-        if (m.value.count > getWindowSize.width - 1)
+        if (m.value.walkLength > getWindowSize.width - 1)
         {
             mvprintw(line, getWindowSize.width - 2, "...");
         }
@@ -42,28 +58,18 @@ void printMatches(KeyProcessor kp)
     for (int i; i < min(getWindowSize.height, kp.matches.length); i++)
     {
         immutable int lineNumber = maxLines - i - 1;
-        if (lineNumber is kp.selected)
-        {
-            attron(A_REVERSE);
-            printLine(lineNumber, kp.matches[i]);
-            attroff(A_REVERSE);
-        }
-        else
-        {
-            printLine(lineNumber, kp.matches[i]);
-        }
+        printLine(lineNumber, kp.matches[i]);
     }
 }
 
 void printSelection(KeyProcessor kp)
 {
-    immutable maxLines = getWindowSize.height - 2;
-
-    attron(A_REVERSE);
-    immutable stopLine = max(0, maxLines - kp.matches.length);
-    if (kp.matches.length > 0)
-        mvprintw(kp.selected, 0, "> ");
-    attroff(A_REVERSE);
+    attron(A_BOLD);
+    withColor(Colors.ARROW, delegate void() {
+        if (kp.matches.length > 0)
+            mvprintw(kp.selected, 0, "> ");
+    });
+    attroff(A_BOLD);
 }
 
 void printTotalMatches(KeyProcessor kp)

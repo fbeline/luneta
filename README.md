@@ -2,15 +2,15 @@
 
 Luneta is an interactive filter that can be easily composed within any script.
 
-<p align="center">
-  <img width="80%" src="https://user-images.githubusercontent.com/5730881/79627815-f864bc80-8111-11ea-9a14-11ab35f1962c.gif">
-</p>
+![terminal](https://user-images.githubusercontent.com/5730881/80448528-f3162780-88f2-11ea-9d2b-82f1b31b727c.png)
 
 ## About
 
 - fast.
-- small and portable. (~ 1mb binary)
+- small binary. (~ 1mb)
 - adaptable screen size.
+- Supports terminals that are not capable of redefining colors.
+_`--no-color`_
 
 Run `luneta -h` for help.
 
