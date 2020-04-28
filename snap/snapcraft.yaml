@@ -1,24 +1,36 @@
+name: luneta
+version: "0.4.1"
+summary: Terminal fuzzy finder
+description: |
+  Luneta is an interactive filter that can be easily composed within any script.
 
-  name: luneta
-  version: '0.4.1'
-  summary: Terminal fuzzy finder
-  description: |
-    Luneta is an interactive filter that can be easily composed within any script.
+base: core18
+grade: stable
+confinement: strict
+license: GPL-2.0
 
-  grade: stable
-  base: core18
+apps:
+  luneta:
+    command: luneta
 
-  apps:
-    luneta:
-      command: luneta
-    
-  parts:
-    luneta:
-      source: https://github.com/fbeline/luneta/releases/download/v$SNAPCRAFT_PROJECT_VERSION/luneta-linux-amd64.tar.gz
-      plugin: dump
-      stage-packages:
-        - libncursesw5
+parts:
+  luneta:
+    source: https://github.com/fbeline/luneta
+    source-type: git
+    source-branch: master
+    plugin: dump
+    build-snaps:
+      - dub
+      - ldc2
+    build-packages:
+      - libncursesw5-dev
+    stage-packages:
+      - libncursesw5
+    override-build: |
+      snapcraftctl build
+      dub build -b release --compiler ldc2
+      mv ./luneta $SNAPCRAFT_PART_INSTALL/
 
-  architectures:
-    - build-on: amd64
-      run-on: amd64
+architectures:
+  - build-on: amd64
+    run-on: amd64
