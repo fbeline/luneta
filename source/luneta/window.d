@@ -40,7 +40,6 @@ void init(void delegate() loop)
     setlocale(LC_ALL, "");
     File tty = File("/dev/tty", "r+");
     newterm(null, tty.getFP, tty.getFP);
-
     scope (failure)
         endwin;
     scope (exit)
