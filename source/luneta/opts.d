@@ -13,6 +13,7 @@ void initialize(int _height, bool _colorSupport) {
 @("On application options initialization")
 unittest {
     assert(height == 22);
-    initialize(10);
+    initialize(10, false);
     assert(height == 10);
+    assert(!colorSupport);
 }
