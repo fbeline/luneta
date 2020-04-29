@@ -30,3 +30,7 @@ parts:
       snapcraftctl build
       dub build -b release --compiler ldc2
       mv ./luneta $SNAPCRAFT_PART_INSTALL/
+
+architectures:
+  - build-on: amd64
+  - build-on: i386
