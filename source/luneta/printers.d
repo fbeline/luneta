@@ -36,7 +36,7 @@ void printMatches(KeyProcessor kp)
         int i;
         foreach (c; m.value.byCodePoint)
         {
-            bool isMatch = indexes.removeKey(i) > 0;
+            bool isMatch = m.matches[i] == 1;
             bool isSelected = line is kp.selected;
             bool isSelectedMatch = isMatch && isSelected;
             Tuple!(bool, Colors)[4] printOptions = [

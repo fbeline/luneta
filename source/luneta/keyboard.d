@@ -161,13 +161,14 @@ private:
 public:
     string pattern;
 
-    this(fuzzyFn fuzzy)
+    this(fuzzyFn fuzzy, ulong dbsize)
     {
         this._key = Key();
         this._dosearch = true;
         this._fuzzy = fuzzy;
         this._terminate = Terminate.EMPTY;
         this.pattern = "";
+        this._all = new FuzzyResult[dbsize];
         search;
     }
 
@@ -232,7 +233,7 @@ public:
         if (!_dosearch)
             return;
 
-        _all = _fuzzy(pattern);
+        _fuzzy(pattern, _all);
         _matches = pattern.empty ? _all : _all.filter!(m => m.score > 0).array();
         _selected = getWindowSize.height - 3;
     }
