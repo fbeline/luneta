@@ -11,7 +11,7 @@ import luneta.opts;
 
 private:
 
-const string VERSION = "v0.4.1";
+const string VERSION = "v0.4.2";
 
 struct Result
 {
@@ -28,10 +28,10 @@ string[] parseStdin()
     return lines;
 }
 
-void delegate() loop(fuzzyFn fzy, ref Result result)
+void delegate() loop(fuzzyFn fzy, ulong dbsize, ref Result result)
 {
     return delegate void() {
-        auto kp = new KeyProcessor(fzy);
+        auto kp = new KeyProcessor(fzy, dbsize);
         print(kp);
         do
         {
@@ -77,9 +77,10 @@ int main(string[] args)
         return 0;
     }
 
-    auto fzy = fuzzy(parseStdin());
+    auto db = parseStdin();
+    auto fzy = fuzzy(db);
     Result result = Result();
-    init(loop(fzy, result));
+    init(loop(fzy, db.length, result));
     writeln(result.value);
     return result.status;
 }
