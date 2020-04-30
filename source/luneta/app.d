@@ -11,7 +11,7 @@ import luneta.opts;
 
 private:
 
-const string VERSION = "v0.4.2";
+const string VERSION = "v0.4.3";
 
 struct Result
 {
