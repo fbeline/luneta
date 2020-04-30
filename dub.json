@@ -9,7 +9,7 @@
 	"sourcePaths": ["source/luneta"],
 	"copyright": "Copyright © 2020, Felipe Beline Baravieira",
 	"dependencies": {
-		"fuzzyd": "2.1.0-beta",
+		"fuzzyd": "2.0.1-beta",
 		"ncurses": "*"
 	},
 	"subConfigurations": {

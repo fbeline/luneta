@@ -18,13 +18,13 @@ void printMatches(KeyProcessor kp)
 {
     const maxLines = getWindowSize.height - 2;
 
-    void print(Tuple!(bool, Colors)[] printOptions, int line, int i, dchar c)
+    void print(Tuple!(bool, Colors)[] printOptions, int row, int col, dchar c)
     {
         foreach (p; printOptions)
         {
             if (p[0])
             {
-                withColor(p[1], delegate void() { mvaddch(line, i + 2, c); });
+                withColor(p[1], delegate void() { mvaddch(row, col + 2, c); });
                 break;
             }
         }
@@ -36,13 +36,14 @@ void printMatches(KeyProcessor kp)
         int i;
         foreach (c; m.value.byCodePoint)
         {
-            bool isMatch = m.matches[i] == 1;
+            bool isMatch = m.matches.canFind(i);
             bool isSelected = line is kp.selected;
             bool isSelectedMatch = isMatch && isSelected;
             Tuple!(bool, Colors)[4] printOptions = [
                 tuple(isSelectedMatch, Colors.SELECTED_MATCH),
-                tuple(isSelected, Colors.SELECTED), tuple(isMatch,
-                        Colors.MATCH), tuple(true, Colors.DEFAULT)
+                tuple(isSelected, Colors.SELECTED),
+                tuple(isMatch, Colors.MATCH),
+                tuple(true, Colors.DEFAULT)
             ];
 
             print(printOptions, line, i, c);
@@ -55,9 +56,9 @@ void printMatches(KeyProcessor kp)
         }
     }
 
-    for (int i; i < min(getWindowSize.height, kp.matches.length); i++)
+    for (int i; i < min(getWindowSize.height, kp.total); i++)
     {
-        immutable int lineNumber = maxLines - i - 1;
+        const int lineNumber = maxLines - i - 1;
         printLine(lineNumber, kp.matches[i]);
     }
 }
@@ -66,7 +67,7 @@ void printSelection(KeyProcessor kp)
 {
     attron(A_BOLD);
     withColor(Colors.ARROW, delegate void() {
-        if (kp.matches.length > 0)
+        if (kp.total > 0)
             mvprintw(kp.selected, 0, "> ");
     });
     attroff(A_BOLD);
@@ -74,7 +75,7 @@ void printSelection(KeyProcessor kp)
 
 void printTotalMatches(KeyProcessor kp)
 {
-    auto str = kp.matches.length.to!string ~ "/" ~ kp.all.length.to!string;
+    auto str = kp.total.to!string ~ "/" ~ kp.all.length.to!string;
 
     attron(A_BOLD);
     mvprintw(getWindowSize.height - 2, 1, str);

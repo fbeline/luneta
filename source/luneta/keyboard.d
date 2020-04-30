@@ -7,6 +7,8 @@ import std.array;
 import luneta.window;
 import luneta.utils;
 import fuzzyd.core;
+import std.container.binaryheap;
+import std.range;
 
 private enum WideKeys
 {
@@ -65,6 +67,7 @@ private:
     FuzzyResult[] _all;
     FuzzyResult[] _matches;
     int _selected, _cursorx;
+    long _total;
     bool _dosearch;
     Terminate _terminate;
     Key _key;
@@ -172,6 +175,16 @@ public:
         search;
     }
 
+    final long total() @property
+    {
+        return _total;
+    }
+
+    final FuzzyResult[] all() @property
+    {
+        return _all;
+    }
+
     final FuzzyResult[] matches() @property
     {
         return _matches;
@@ -197,11 +210,6 @@ public:
         return _key;
     }
 
-    final FuzzyResult[] all() @property
-    {
-        return _all;
-    }
-
     final int cursorx() @property
     {
         return _cursorx;
@@ -209,7 +217,7 @@ public:
 
     final string getSelected()
     {
-        immutable index = getWindowSize.height - _selected - 3;
+        const index = getWindowSize.height - _selected - 3;
         return matches[index].value;
     }
 
@@ -233,8 +241,14 @@ public:
         if (!_dosearch)
             return;
 
-        _fuzzy(pattern, _all);
-        _matches = pattern.empty ? _all : _all.filter!(m => m.score > 0).array();
+        _total = _fuzzy(pattern, _all);
+
+        if (pattern.empty) {
+            _total = _all.length;
+            _matches = _all;
+        } else {
+            _matches = heapify!"a.score < b.score"(_all).take(_total).array;
+        }
         _selected = getWindowSize.height - 3;
     }
 }
