@@ -94,7 +94,7 @@ private:
 
     void previousSelection()
     {
-        const yLimit = max(0, getWindowSize.height - matches.length.to!int - 2);
+        const yLimit = max(0, printArea.height - matches.length.to!int);
         _selected = max(yLimit, _selected - 1);
         _dosearch = false;
     }
@@ -245,9 +245,10 @@ public:
 
         if (pattern.empty) {
             _total = _all.length;
-            _matches = _all;
+            _matches = _all.take(printArea.height).array;
         } else {
-            _matches = heapify!"a.score < b.score"(_all).take(_total).array;
+            const n = min(_total, printArea.height);
+            _matches = heapify!"a.score < b.score"(_all).take(n).array;
         }
         _selected = getWindowSize.height - 3;
     }

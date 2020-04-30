@@ -16,7 +16,7 @@ private:
 
 void printMatches(KeyProcessor kp)
 {
-    const maxLines = getWindowSize.height - 2;
+    const maxLines = printArea.height;
 
     void print(Tuple!(bool, Colors)[] printOptions, int row, int col, dchar c)
     {
@@ -32,7 +32,6 @@ void printMatches(KeyProcessor kp)
 
     void printLine(int line, FuzzyResult m)
     {
-        auto indexes = m.matches.dup;
         int i;
         foreach (c; m.value.byCodePoint)
         {
@@ -50,16 +49,15 @@ void printMatches(KeyProcessor kp)
 
             i++;
         }
-        if (m.value.walkLength > getWindowSize.width - 1)
+        if (m.value.walkLength > printArea.width - 1)
         {
-            mvprintw(line, getWindowSize.width - 2, "...");
+            mvprintw(line, printArea.width - 2, "...");
         }
     }
 
-    for (int i; i < min(getWindowSize.height, kp.total); i++)
+    foreach (int i, m; kp.matches)
     {
-        const int lineNumber = maxLines - i - 1;
-        printLine(lineNumber, kp.matches[i]);
+        printLine(maxLines - i - 1, m);
     }
 }
 

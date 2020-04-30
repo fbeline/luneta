@@ -30,6 +30,12 @@ Wsize getWindowSize()
     return Wsize(getmaxx(stdscr), min(luneta.opts.height, getmaxy(stdscr)));
 }
 
+Wsize printArea()
+{
+    const wz = getWindowSize;
+    return Wsize(wz.width, wz.height - 2);
+}
+
 /// ncurses mvprintw wrapper
 void mvprintw(int line, int col, string str)
 {
