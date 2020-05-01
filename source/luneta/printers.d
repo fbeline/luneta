@@ -17,6 +17,7 @@ private:
 void printMatches(KeyProcessor kp)
 {
     const maxLines = printArea.height;
+    const maxCols = printArea.width;
 
     void print(Tuple!(bool, Colors)[] printOptions, int row, int col, dchar c)
     {
@@ -35,6 +36,9 @@ void printMatches(KeyProcessor kp)
         int i;
         foreach (c; m.value.byCodePoint)
         {
+            if (i > maxCols)
+                break;
+
             bool isMatch = m.matches.canFind(i);
             bool isSelected = line is kp.selected;
             bool isSelectedMatch = isMatch && isSelected;
@@ -51,7 +55,7 @@ void printMatches(KeyProcessor kp)
         }
         if (m.value.walkLength > printArea.width - 1)
         {
-            mvprintw(line, printArea.width - 2, "...");
+            mvprintw(line, maxCols, "...");
         }
     }
 

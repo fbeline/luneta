@@ -33,7 +33,7 @@ Wsize getWindowSize()
 Wsize printArea()
 {
     const wz = getWindowSize;
-    return Wsize(wz.width, wz.height - 2);
+    return Wsize(wz.width - 2, wz.height - 2);
 }
 
 /// ncurses mvprintw wrapper
