@@ -253,7 +253,7 @@ public:
 @("On wide character - CTRL+A and CTRL+E")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t.pattern = "foobar";
 
     // cursor at the end of the line
@@ -270,7 +270,7 @@ unittest
 @("On wide character - Terminate with 0 when ENTER")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t._key = Key(KeyType.WIDE_CHARACTER, WideKeys.ENTER);
     t.wideHandler;
     assert(t.terminate == Terminate.OK);
@@ -279,7 +279,7 @@ unittest
 @("On wide character - Terminate with 1 when Ctrl+D or Esc ")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t._key = Key(KeyType.WIDE_CHARACTER, WideKeys.CTRL_D);
     t.wideHandler;
     assert(t.terminate == Terminate.EXIT);
@@ -288,7 +288,7 @@ unittest
 @("On wide character - Properly build pattern")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t.pattern = "ab";
     t._cursorx = 2;
     t._key = Key(KeyType.WIDE_CHARACTER, 99);
@@ -300,7 +300,7 @@ unittest
 @("On wide character - Insert char at the cursorx position")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t.pattern = "âc";
     t._cursorx = 1;
     t._key = Key(KeyType.WIDE_CHARACTER, 98);
@@ -312,7 +312,7 @@ unittest
 @("On KEY_RIGHT - Should increment cursorx")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t.pattern = "foo";
     t.cursorx = 2;
     t._key = Key(KeyType.FUNCTION_KEY, KEY_RIGHT);
@@ -323,7 +323,7 @@ unittest
 @("On KEY_RIGHT - Cursorx should not be greater than pattern length")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t.pattern = "fôo";
     t.cursorx = 3;
     t._key = Key(KeyType.FUNCTION_KEY, KEY_RIGHT);
@@ -334,7 +334,7 @@ unittest
 @("On KEY_LEFT - Should decrement cursorx")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t.pattern = "foo";
     t.cursorx = 3;
     t._key = Key(KeyType.FUNCTION_KEY, KEY_LEFT);
@@ -345,7 +345,7 @@ unittest
 @("On KEY_LEFT - Cursorx should not be less than zero")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t.pattern = "foo";
     t.cursorx = 0;
     t._key = Key(KeyType.FUNCTION_KEY, KEY_LEFT);
@@ -356,7 +356,7 @@ unittest
 @("On BACKSPACE - cursor at end of line")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t.pattern = "foo";
     t.cursorx = 3;
     t._key = Key(KeyType.FUNCTION_KEY, KEY_BACKSPACE);
@@ -367,7 +367,7 @@ unittest
 @("On BACKSPACE - cursor at the middle of the pattern")
 unittest
 {
-    auto t = new KeyProcessor(fuzzy([]));
+    auto t = new KeyProcessor(fuzzy([]), 0);
     t.pattern = "bar";
     t.cursorx = 2;
     t._key = Key(KeyType.FUNCTION_KEY, KEY_BACKSPACE);
