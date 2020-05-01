@@ -75,4 +75,4 @@ dub build -b release --compiler ldc2
 
 ## License
 
-MIT
+GPL-2.0
