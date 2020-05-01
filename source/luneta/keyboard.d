@@ -242,14 +242,8 @@ public:
             return;
 
         _total = _fuzzy(pattern, _all);
-
-        if (pattern.empty) {
-            _total = _all.length;
-            _matches = _all.take(printArea.height).array;
-        } else {
-            const n = min(_total, printArea.height);
-            _matches = heapify!"a.score < b.score"(_all).take(n).array;
-        }
+        const n = min(_total, printArea.height);
+        _matches = heapify!"a.score < b.score"(_all).take(n).array;
         _selected = getWindowSize.height - 3;
     }
 }
