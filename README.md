@@ -2,6 +2,8 @@
 
 Luneta is an interactive filter that can be easily composed within any script.
 
+It's a fast and lightweight terminal tool that brings swiftness to your daily hacks. :shell:
+
 ![terminal](https://user-images.githubusercontent.com/5730881/80448528-f3162780-88f2-11ea-9d2b-82f1b31b727c.png)
 
 ## About
@@ -10,7 +12,7 @@ Luneta is an interactive filter that can be easily composed within any script.
 - small binary. (~ 1mb)
 - adaptable screen size.
 - Supports terminals that are not capable of redefining colors.
-_`--no-color`_
+[_--no-color_](https://asciinema.org/a/321218)
 
 Run `luneta -h` for help.
 
