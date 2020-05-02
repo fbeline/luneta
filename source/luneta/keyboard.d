@@ -217,10 +217,10 @@ public:
         return _cursorx;
     }
 
-    final string getSelected()
+    final string[] result()
     {
         const index = getWindowSize.height - _selected - 3;
-        return matches[index].value;
+        return [matches[index].value];
     }
 
     final void getKey()

@@ -11,9 +11,19 @@ It's a fast and lightweight terminal tool that brings swiftness to your daily ha
 - Fast.
 - Small binary. (~ 1mb)
 - Adaptable screen size.
-- Supports terminals that are not capable of redefining colors. [_--no-color_](https://asciinema.org/a/321218)
+- Supports terminals that are not capable of redefining colors. [_--color=FALSE_](https://asciinema.org/a/321218)
 
 Run `luneta -h` for help.
+
+```
+usage: luneta [options]
+-v --version version
+-q   --query default query to be used upon startup
+-f  --filter do not start interactive finder, e.g -f="pattern"
+    --height set the maximum window height (number of lines), e.g --height 25
+     --color color support, e.g --color=FALSE
+-h    --help This help information.
+```
 
 ## Usage examples
 
