@@ -8,12 +8,13 @@ It's a fast and lightweight terminal tool that brings swiftness to your daily ha
 
 ## About
 
-- Fast.
-- Small binary. (~ 1mb)
-- Adaptable screen size.
-- Supports terminals that are not capable of redefining colors. [_--color=FALSE_](https://asciinema.org/a/321218)
+- Fast
+- Small binary (~ 1mb)
+- Multiple lines selection
+- Adaptable screen size
+- Supports terminals that are not capable of redefining colors [_--color=FALSE_](https://asciinema.org/a/321218)
 
-Run `luneta -h` for help.
+Run `luneta -h` for help:
 
 ```
 usage: luneta [options]
@@ -23,6 +24,31 @@ usage: luneta [options]
     --height set the maximum window height (number of lines), e.g --height 25
      --color color support, e.g --color=FALSE
 -h    --help This help information.
+```
+## Installation
+
+It should work on any ANSI/POSIX-conforming unix.
+
+[Precompiled binaries for linux](https://github.com/fbeline/luneta/releases) - _Make shure that you have_ **libncurses** _installed._
+
+### Snap
+
+[Linux distributions that support snaps](https://snapcraft.io/docs/installing-snapd).
+
+`snap install luneta`
+
+### Manual Installation
+
+Prerequisites:
+
+- [ldc](https://dlang.org/download.html)
+- [dub](https://code.dlang.org/download)
+- ncurses
+
+```bash
+git clone https://github.com/fbeline/luneta
+cd luneta
+dub build -b release --compiler ldc2
 ```
 
 ## Usage examples
@@ -49,38 +75,15 @@ Check out [/examples](/examples) for more.
 
 ## Keyboard shorcuts
 
-- CTRL + n: next selection
-- CTRL + p: previous selection
-- CTRL + a: beggining of the line
-- CTRL + e: end of the line
-- CTRL + u: erase all the character before and after the cursor
-- CTRL + d: exit
-
-## Installation
-
-It should work on any ANSI/POSIX-conforming unix.
-
-[Precompiled binaries for linux](https://github.com/fbeline/luneta/releases) - _Make shure that you have_ **libncurses** _installed._
-
-### Snap
-
-[Linux distributions that support snaps](https://snapcraft.io/docs/installing-snapd).
-
-`snap install luneta`
-
-### Manual Installation
-
-Prerequisites:
-
-- [ldc](https://dlang.org/download.html)
-- [dub](https://code.dlang.org/download)
-- ncurses
-
-```bash
-git clone https://github.com/fbeline/luneta
-cd luneta
-dub build -b release --compiler ldc2
-```
+| Key | Action |
+|-----|--------|
+| CTRL + Space | Select line and move to the next item |
+| CTRL + n | next selection  |
+| CTRL + p | previous selection  |
+| CTRL + a | beggining of the line  |
+| CTRL + e | end of the line  |
+| CTRL + u | erase all the character before and after the cursor |
+| CTRL + d | exit |
 
 ## License
 
