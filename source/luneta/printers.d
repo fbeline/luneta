@@ -41,7 +41,7 @@ void printMatches(KeyProcessor kp)
 
             bool isMatch = m.matches.canFind(i);
             bool isSelected = line is kp.selected;
-            bool isSelectedMatch = isMatch && isSelected;
+            bool isSelectedMatch = (isMatch && isSelected) || kp.isIdxSelected(maxLines - line - 1);
             Tuple!(bool, Colors)[4] printOptions = [
                 tuple(isSelectedMatch, Colors.SELECTED_MATCH),
                 tuple(isSelected, Colors.SELECTED),

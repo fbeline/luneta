@@ -68,7 +68,7 @@ private:
     fuzzyFn _fuzzy;
     FuzzyResult[] _all;
     FuzzyResult[] _matches;
-    string[] _result;
+    int[] _selectedIdxs;
     int _selected, _cursorx;
     long _total;
     bool _dosearch;
@@ -161,16 +161,19 @@ private:
             break;
         case WideKeys.CTRL_SPACE:
             appendSelection;
+            nextSelection;
+            _dosearch = false;
             break;
         default:
             buildPattern;
         }
     }
 
-    final void appendSelection()
+    void appendSelection()
     {
         const index = getWindowSize.height - _selected - 3;
-        _result ~= matches[index].value;
+        if (!_selectedIdxs.canFind(index))
+            _selectedIdxs ~= index;
     }
 
 public:
@@ -186,6 +189,11 @@ public:
         this._all = new FuzzyResult[dbsize];
         this.cursorx = pattern.walkLength.to!int;
         search;
+    }
+
+    final bool isIdxSelected(int index)
+    {
+        return _selectedIdxs.canFind(index);
     }
 
     final long total() @property
@@ -231,7 +239,7 @@ public:
     final string[] result() @property
     {
         appendSelection;
-        return _result;
+        return _selectedIdxs.map!(x => _matches[x].value).array;
     }
 
     final void getKey()
@@ -258,6 +266,7 @@ public:
         const n = min(_total, printArea.height);
         _matches = heapify!"a.score < b.score"(_all).take(n).array;
         _selected = getWindowSize.height - 3;
+        _selectedIdxs = [];
     }
 }
 
