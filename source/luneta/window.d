@@ -7,7 +7,7 @@ public import deimos.ncurses;
 import luneta.opts;
 import core.stdc.locale;
 
-/// Terminal colors
+/// terminal colors
 enum Colors
 {
     DEFAULT,
@@ -27,9 +27,12 @@ struct Wsize
 /// get window size
 Wsize getWindowSize()
 {
-    return Wsize(getmaxx(stdscr), min(luneta.opts.height, getmaxy(stdscr)));
+    /// 3 is minimum accepted screen size
+    const height = luneta.opts.height > 3 ? luneta.opts.height : getmaxy(stdscr);
+    return Wsize(getmaxx(stdscr), height);
 }
 
+/// matches print area
 Wsize printArea()
 {
     const wz = getWindowSize;
