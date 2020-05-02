@@ -14,7 +14,7 @@ import std.range;
 
 private:
 
-const string VERSION = "v0.6.0";
+const string VERSION = "v0.7.0";
 
 struct Result
 {

@@ -25,6 +25,7 @@ usage: luneta [options]
      --color color support, e.g --color=FALSE
 -h    --help This help information.
 ```
+
 ## Installation
 
 It should work on any ANSI/POSIX-conforming unix.
