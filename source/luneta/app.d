@@ -11,7 +11,7 @@ import luneta.opts;
 
 private:
 
-const string VERSION = "v0.4.3";
+const string VERSION = "v0.5.0";
 
 struct Result
 {
@@ -60,11 +60,13 @@ int main(string[] args)
 
     int height;
     bool _version, colorSupport;
-    auto helpInformation = getopt(args, std.getopt.config.passThrough, "height",
-            "set the maximum window height (number of lines), e.g --height 25", &height,
+    string query;
+    auto helpInformation = getopt(args, std.getopt.config.passThrough,
             "version|v", "version", &_version,
+            "query|q", "default query to be used upon startup", &query,
+            "height", "set the maximum window height (number of lines), e.g --height 25", &height,
             "no-color", "disable colors", &colorSupport);
-    luneta.opts.initialize(height, !colorSupport);
+    luneta.opts.initialize(height, !colorSupport, query);
 
     if (helpInformation.helpWanted)
     {

@@ -6,6 +6,7 @@ import std.algorithm;
 import std.array;
 import luneta.window;
 import luneta.utils;
+import luneta.opts;
 import fuzzyd.core;
 import std.container.binaryheap;
 import std.range;
@@ -170,8 +171,9 @@ public:
         this._dosearch = true;
         this._fuzzy = fuzzy;
         this._terminate = Terminate.EMPTY;
-        this.pattern = "";
+        this.pattern = luneta.opts.query;
         this._all = new FuzzyResult[dbsize];
+        this.cursorx = pattern.walkLength.to!int;
         search;
     }
 

@@ -8,11 +8,10 @@ It's a fast and lightweight terminal tool that brings swiftness to your daily ha
 
 ## About
 
-- fast.
-- small binary. (~ 1mb)
-- adaptable screen size.
-- Supports terminals that are not capable of redefining colors.
-[_--no-color_](https://asciinema.org/a/321218)
+- Fast.
+- Small binary. (~ 1mb)
+- Adaptable screen size.
+- Supports terminals that are not capable of redefining colors. [_--no-color_](https://asciinema.org/a/321218)
 
 Run `luneta -h` for help.
 
