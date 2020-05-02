@@ -1,5 +1,5 @@
 name: luneta
-version: "0.4.3"
+version: "0.5.0"
 summary: Terminal fuzzy finder
 description: |
   Luneta is an interactive filter that can be easily composed within any script.
