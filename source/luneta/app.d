@@ -15,7 +15,7 @@ const string VERSION = "v0.5.0";
 
 struct Result
 {
-    string value;
+    string[] value;
     int status;
 }
 
@@ -38,7 +38,7 @@ void delegate() loop(fuzzyFn fzy, ulong dbsize, ref Result result)
             kp.getKey;
             if (kp.terminate is Terminate.OK)
             {
-                result.value = kp.getSelected;
+                result.value = kp.result;
                 break;
             }
             else if (kp.terminate is Terminate.EXIT)
@@ -80,6 +80,11 @@ int main(string[] args)
     auto fzy = fuzzy(db);
     Result result = Result();
     init(loop(fzy, db.length, result));
-    writeln(result.value);
+
+    foreach(l; result.value)
+    {
+        writeln(l);
+    }
+
     return result.status;
 }
