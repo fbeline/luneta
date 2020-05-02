@@ -57,16 +57,13 @@ public:
 
 int main(string[] args)
 {
-
-    int height;
-    bool _version, colorSupport;
-    string query;
+    bool _version;
     auto helpInformation = getopt(args, std.getopt.config.passThrough,
             "version|v", "version", &_version,
-            "query|q", "default query to be used upon startup", &query,
-            "height", "set the maximum window height (number of lines), e.g --height 25", &height,
-            "no-color", "disable colors", &colorSupport);
-    luneta.opts.initialize(height, !colorSupport, query);
+            "query|q", "default query to be used upon startup", &luneta.opts.query,
+            "filter|f", "do not start interactive finder", &luneta.opts.filterMode,
+            "height", "set the maximum window height (number of lines), e.g --height 25", &luneta.opts.height,
+            "color", "color support, e.g --color=FALSE", &luneta.opts.colorSupport);
 
     if (helpInformation.helpWanted)
     {
