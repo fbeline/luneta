@@ -20,7 +20,8 @@ private enum WideKeys
     CTRL_E = 5,
     CTRL_U = 21,
     CTRL_N = 14,
-    CTRL_P = 16
+    CTRL_P = 16,
+    CTRL_SPACE = 0
 }
 
 /// pressed character type
@@ -67,6 +68,7 @@ private:
     fuzzyFn _fuzzy;
     FuzzyResult[] _all;
     FuzzyResult[] _matches;
+    string[] _result;
     int _selected, _cursorx;
     long _total;
     bool _dosearch;
@@ -157,9 +159,18 @@ private:
         case WideKeys.CTRL_P:
             previousSelection;
             break;
+        case WideKeys.CTRL_SPACE:
+            appendSelection;
+            break;
         default:
             buildPattern;
         }
+    }
+
+    final void appendSelection()
+    {
+        const index = getWindowSize.height - _selected - 3;
+        _result ~= matches[index].value;
     }
 
 public:
@@ -217,10 +228,10 @@ public:
         return _cursorx;
     }
 
-    final string[] result()
+    final string[] result() @property
     {
-        const index = getWindowSize.height - _selected - 3;
-        return [matches[index].value];
+        appendSelection;
+        return _result;
     }
 
     final void getKey()
