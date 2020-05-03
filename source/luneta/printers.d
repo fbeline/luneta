@@ -35,7 +35,7 @@ void printMatches(KeyProcessor kp)
     {
 
         if (kp.isIdxSelected(maxLines - line - 1))
-            withColor(Colors.ARROW, delegate void() { mvaddch(line, 0, 's'); });
+            withColor(Colors.ARROW, delegate void() { mvprintw(line, 0, "s "); });
 
         int i;
         foreach (c; m.value.byCodePoint)
