@@ -1,3 +1,20 @@
 language: d
 d:
   - ldc
+os:
+  - linux
+  - osx
+addons:
+  homebrew:
+    packages:
+      - ncurses
+script:
+  - dub test --compiler ldc2
+  - ./compress.sh
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file: releases/*
+  skip_cleanup: true
+  on:
+    branch: build-binaries-with-travis

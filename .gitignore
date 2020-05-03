@@ -17,3 +17,4 @@ luneta-test-*
 *.iml
 test.txt
 luneta-linux-amd64.tar.gz
+releases/
