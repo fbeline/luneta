@@ -21,7 +21,8 @@ private enum WideKeys
     CTRL_U = 21,
     CTRL_N = 14,
     CTRL_P = 16,
-    CTRL_SPACE = 0
+    CTRL_SPACE = 0,
+    BACKSPACE = 127
 }
 
 /// pressed character type
@@ -136,6 +137,9 @@ private:
     {
         switch (_key.key)
         {
+        case WideKeys.BACKSPACE:
+            backspace;
+            break;
         case WideKeys.ESC:
         case WideKeys.CTRL_D:
             _terminate = Terminate.EXIT;
