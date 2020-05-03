@@ -8,6 +8,7 @@ addons:
   homebrew:
     packages:
       - ncurses
+    update: true
 script:
   - dub test --compiler ldc2
   - ./compress.sh
