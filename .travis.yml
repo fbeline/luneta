@@ -1,24 +1,26 @@
 language: d
 d:
-- ldc
+  - ldc
 os:
-- linux
-- osx
+  - linux
+  - osx
 addons:
   homebrew:
     packages:
-    - ncurses
+      - ncurses
     update: true
 script:
-- dub test --compiler ldc2
-- "./compress.sh"
+  - dub test --compiler ldc2
+  - "./compress.sh"
+  - ls
 deploy:
   provider: releases
   draft: true
+  overwrite: true
   api_key:
     secure: G9E+h8i5BXY16WJFNLX9YpyNjmkisITRvxBCWOBXMLRdQLmnyi4voL43Bz8pVOA//PzGpwNZen27pmYxYnhqEhPKmO91LfWE8oQilbTjP879yHiMRF7207EyIK7cHe4t9/NybG0U1JJo5dRu3xiLvrScD+YQGrPvZ/X7+jSeFdVIfUqvueHhYDkPo+a4Mz49LUPQpbshDpyn13uhO2csFpVhrCo1UCfLb8eBE4UNjRUoN/AjgNKERTQg3yoBEz45pA2E4F1rbS2QAY7M/zvWGa967CEg4rw5/r7Wt6jnSTZmPOiExs16XiG33tSclfHbYjHshVV1eHVvEDWUi5xSut8ozdw317kH5GPm3PRtLxi0udF2CFRoK6vVTzcqHO1MTW1SvRku5EcUNG0CNbA74twBQGJO4Zr8GJP+h8Cs9kzFH1iFJWLxFNT38IFB3XyN+bn6FrKIuS0fEBmW8ISpKs9jhFM07Lf0hWDmWS5DZEa8ADwL3kOjlrUXHDzUFtu0Uf1yUKXQaw9kL4eDgJGvQxhC15V3/vfW57uj5+58MU6wcBYEO2q7FgK0FffBImAkRvDR6HCOtN6jYxdxfZCQ/FhZz426ADho8QSPPzEKUWsssJRHNPDCq2kP7W6wR7McY+ZfsoQpSXDnLZFsOVk4LL589EBVlWCIEXrifKaRlJE=
   file: releases/*
   on:
     repo: fbeline/luneta
-    branch: build-binaries-with-travis
-  skip_cleanup: 'true'
+    all_branches: true
+  skip_cleanup: true
