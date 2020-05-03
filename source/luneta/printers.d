@@ -33,6 +33,10 @@ void printMatches(KeyProcessor kp)
 
     void printLine(int line, FuzzyResult m)
     {
+
+        if (kp.isIdxSelected(maxLines - line - 1))
+            withColor(Colors.ARROW, delegate void() { mvprintw(line, 0, "s "); });
+
         int i;
         foreach (c; m.value.byCodePoint)
         {
@@ -41,12 +45,11 @@ void printMatches(KeyProcessor kp)
 
             bool isMatch = m.matches.canFind(i);
             bool isSelected = line is kp.selected;
-            bool isSelectedMatch = isMatch && isSelected;
+            bool isSelectedMatch = (isMatch && isSelected) || kp.isIdxSelected(maxLines - line - 1);
             Tuple!(bool, Colors)[4] printOptions = [
                 tuple(isSelectedMatch, Colors.SELECTED_MATCH),
-                tuple(isSelected, Colors.SELECTED),
-                tuple(isMatch, Colors.MATCH),
-                tuple(true, Colors.DEFAULT)
+                tuple(isSelected, Colors.SELECTED), tuple(isMatch,
+                        Colors.MATCH), tuple(true, Colors.DEFAULT)
             ];
 
             print(printOptions, line, i, c);

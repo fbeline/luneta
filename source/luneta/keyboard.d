@@ -20,7 +20,8 @@ private enum WideKeys
     CTRL_E = 5,
     CTRL_U = 21,
     CTRL_N = 14,
-    CTRL_P = 16
+    CTRL_P = 16,
+    CTRL_SPACE = 0
 }
 
 /// pressed character type
@@ -67,6 +68,7 @@ private:
     fuzzyFn _fuzzy;
     FuzzyResult[] _all;
     FuzzyResult[] _matches;
+    int[] _selectedIdxs;
     int _selected, _cursorx;
     long _total;
     bool _dosearch;
@@ -157,9 +159,21 @@ private:
         case WideKeys.CTRL_P:
             previousSelection;
             break;
+        case WideKeys.CTRL_SPACE:
+            appendSelection;
+            nextSelection;
+            _dosearch = false;
+            break;
         default:
             buildPattern;
         }
+    }
+
+    void appendSelection()
+    {
+        const index = getWindowSize.height - _selected - 3;
+        if (!_selectedIdxs.canFind(index))
+            _selectedIdxs ~= index;
     }
 
 public:
@@ -175,6 +189,11 @@ public:
         this._all = new FuzzyResult[dbsize];
         this.cursorx = pattern.walkLength.to!int;
         search;
+    }
+
+    final bool isIdxSelected(int index)
+    {
+        return _selectedIdxs.canFind(index);
     }
 
     final long total() @property
@@ -217,10 +236,12 @@ public:
         return _cursorx;
     }
 
-    final string[] result()
+    final string[] result() @property
     {
-        const index = getWindowSize.height - _selected - 3;
-        return [matches[index].value];
+        if (_selectedIdxs.empty)
+            appendSelection;
+
+        return _selectedIdxs.map!(x => _matches[x].value).array;
     }
 
     final void getKey()
@@ -247,6 +268,7 @@ public:
         const n = min(_total, printArea.height);
         _matches = heapify!"a.score < b.score"(_all).take(n).array;
         _selected = getWindowSize.height - 3;
+        _selectedIdxs = [];
     }
 }
 

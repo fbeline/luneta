@@ -4,16 +4,17 @@ Luneta is an interactive filter that can be easily composed within any script.
 
 It's a fast and lightweight terminal tool that brings swiftness to your daily hacks. :shell:
 
-![terminal](https://user-images.githubusercontent.com/5730881/80448528-f3162780-88f2-11ea-9d2b-82f1b31b727c.png)
+![demo](https://user-images.githubusercontent.com/5730881/80897768-d141e980-8cd2-11ea-8548-91f712cf607d.gif)
 
 ## About
 
-- Fast.
-- Small binary. (~ 1mb)
-- Adaptable screen size.
-- Supports terminals that are not capable of redefining colors. [_--color=FALSE_](https://asciinema.org/a/321218)
+- Fast
+- Small binary (~ 1mb)
+- Multiple lines selection
+- Adaptable screen size
+- Supports terminals that are not capable of redefining colors [_--color=FALSE_](https://asciinema.org/a/321218)
 
-Run `luneta -h` for help.
+Run `luneta -h` for help:
 
 ```
 usage: luneta [options]
@@ -24,37 +25,6 @@ usage: luneta [options]
      --color color support, e.g --color=FALSE
 -h    --help This help information.
 ```
-
-## Usage examples
-
-Pick a command in your shell history:
-
-```bash
-cat ~/.bash_history | luneta
-```
-
-Checkout a git branch:
-
-```bash
-git branch | luneta | xargs git checkout
-```
-
-Kill an active process:
-
-```bash
-ps -e -o comm | luneta | xargs pkill
-```
-
-Check out [/examples](/examples) for more.
-
-## Keyboard shorcuts
-
-- CTRL + n: next selection
-- CTRL + p: previous selection
-- CTRL + a: beggining of the line
-- CTRL + e: end of the line
-- CTRL + u: erase all the character before and after the cursor
-- CTRL + d: exit
 
 ## Installation
 
@@ -81,6 +51,40 @@ git clone https://github.com/fbeline/luneta
 cd luneta
 dub build -b release --compiler ldc2
 ```
+
+## Usage examples
+
+Pick a command in your shell history:
+
+```bash
+cat ~/.bash_history | luneta
+```
+
+Checkout a git branch:
+
+```bash
+git branch | luneta | xargs git checkout
+```
+
+Kill an active process:
+
+```bash
+ps -e -o comm | luneta | xargs pkill
+```
+
+Check out [/examples](/examples) for more.
+
+## Keyboard shorcuts
+
+| Key | Action |
+|-----|--------|
+| CTRL + Space | Select line and move to the next item |
+| CTRL + n | next selection  |
+| CTRL + p | previous selection  |
+| CTRL + a | beggining of the line  |
+| CTRL + e | end of the line  |
+| CTRL + u | erase all the character before and after the cursor |
+| CTRL + d | exit |
 
 ## License
 
