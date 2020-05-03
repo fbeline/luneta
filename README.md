@@ -4,7 +4,7 @@ Luneta is an interactive filter that can be easily composed within any script.
 
 It's a fast and lightweight terminal tool that brings swiftness to your daily hacks. :shell:
 
-![terminal](https://user-images.githubusercontent.com/5730881/80448528-f3162780-88f2-11ea-9d2b-82f1b31b727c.png)
+![demo](https://user-images.githubusercontent.com/5730881/80897768-d141e980-8cd2-11ea-8548-91f712cf607d.gif)
 
 ## About
 
