@@ -2,10 +2,10 @@
 mkdir -p releases
 unameOut="$(uname -s)"
 case "${unameOut}" in
-    Linux*)     machine=Linux;;
-    Darwin*)    machine=Mac;;
-    CYGWIN*)    machine=Cygwin;;
-    MINGW*)     machine=MinGw;;
+    Linux*)     machine=linux;;
+    Darwin*)    machine=osx;;
+    CYGWIN*)    machine=cygwin;;
+    MINGW*)     machine=minGw;;
     *)          machine="UNKNOWN:${unameOut}"
 esac
 dub build -b release --compiler ldc2
