@@ -9,4 +9,4 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 dub build -b release --compiler ldc2
-tar -czvf releases/luneta-$machine.tar.gz ./luneta
+tar -czvf releases/luneta-$machine-amd64.tar.gz ./luneta
