@@ -10,7 +10,7 @@ It's a fast and lightweight terminal tool that brings swiftness to your daily ha
 
 - Fast
 - Small binary (~ 1mb)
-- Multiple lines selection
+- Multiple line selection
 - Adaptable screen size
 - Supports terminals that are not capable of redefining colors [_--color=FALSE_](https://asciinema.org/a/321218)
 
