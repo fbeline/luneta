@@ -30,7 +30,7 @@ usage: luneta [options]
 
 It should work on any ANSI/POSIX-conforming unix.
 
-[Precompiled binaries for linux](https://github.com/fbeline/luneta/releases) - _Make shure that_ **libncurses** _is installed._
+[Precompiled binaries](https://github.com/fbeline/luneta/releases) - _Make shure that_ **libncurses** _is installed._
 
 ### Snap
 
