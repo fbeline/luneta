@@ -12,7 +12,6 @@ addons:
 script:
   - dub test --compiler ldc2
   - "./compress.sh"
-  - ls
 deploy:
   provider: releases
   skip_cleanup: true
@@ -25,3 +24,4 @@ deploy:
   on:
     repo: fbeline/luneta
     all_branches: true
+    tags: true
