@@ -238,7 +238,9 @@ public:
 
     final string[] result() @property
     {
-        appendSelection;
+        if (_selectedIdxs.empty)
+            appendSelection;
+
         return _selectedIdxs.map!(x => _matches[x].value).array;
     }
 
