@@ -15,5 +15,5 @@
 	"subConfigurations": {
 		"ncurses": "minimal"
 	},
-	"license": "MIT"
+	"license": "GPL-2.0"
 }
