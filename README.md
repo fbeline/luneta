@@ -63,7 +63,7 @@ fc -ln 1 | luneta
 Checkout a git branch:
 
 ```bash
-git branch | luneta | xargs git checkout
+git branch 2>/dev/null | luneta | sed "s/.* //" | awk '{print $1}' | xargs git checkout
 ```
 
 Kill an active process:
