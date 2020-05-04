@@ -54,10 +54,10 @@ dub build -b release --compiler ldc2
 
 ## Usage examples
 
-Pick a command in your shell history:
+Search a command in your shell history:
 
 ```bash
-cat ~/.bash_history | luneta
+fc -ln 1 | luneta
 ```
 
 Checkout a git branch:
