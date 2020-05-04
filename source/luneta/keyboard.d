@@ -178,6 +178,8 @@ private:
         const index = getWindowSize.height - _selected - 3;
         if (!_selectedIdxs.canFind(index))
             _selectedIdxs ~= index;
+        else
+            _selectedIdxs = _selectedIdxs.removeEl(index);
     }
 
 public:
