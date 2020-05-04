@@ -1,5 +1,7 @@
 # Examples
 
+List of examples to demonstrates how to use luneta.
+
 ## Hello world
 
 ```bash
@@ -11,7 +13,7 @@ echo "hello\nworld\nluneta" | luneta
 ```bash
 function ik {
     local pname
-    pname=$(ps -e -o comm | luneta) && pkill $pname
+    pname=$(ps -e -o comm 2> /dev/null | luneta) && pkill "${pname}"
 }
 ```
 
@@ -37,7 +39,7 @@ function of {
 ## Checkout git branch
 
 ```bash
-git branch 2>/dev/null | luneta | sed "s/.* //" | awk '{print $1}' | xargs git checkout
+git branch 2> /dev/null | luneta | sed "s/.* //" | awk '{print $1}' | xargs git checkout
 ```
 
 ## Docker
@@ -45,7 +47,9 @@ git branch 2>/dev/null | luneta | sed "s/.* //" | awk '{print $1}' | xargs git c
 Stop container
 
 ```bash
+function docker-stop {
   local id
-  id=$(docker ps | sed 1d | luneta | awk '{print $1}') && docker stop "${id}"
+  id=$(docker ps 2> /dev/null | sed 1d | luneta) \
+   && echo "${id}" | awk '{print $1}' | xargs docker stop
+}
 ```
-

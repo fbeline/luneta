@@ -72,7 +72,7 @@ Kill an active process:
 ps -e -o comm | luneta | xargs pkill
 ```
 
-Check out [/examples](/examples) for more.
+Refer to the [examples](/examples.md) for more.
 
 ## Keyboard shorcuts
 
