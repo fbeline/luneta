@@ -24,11 +24,10 @@ struct Result
 
 string[] parseStdin()
 {
-    string l;
-    string[] lines;
-    while ((l = stdin.readln()) !is null)
-        lines ~= strip(l);
-    return lines;
+    return stdin
+        .byLineCopy
+        .map!strip
+        .array;
 }
 
 Result filterMode(fuzzyFn fzy, long size, string pattern)
