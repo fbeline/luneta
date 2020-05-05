@@ -13,7 +13,7 @@ import std.range;
 
 private enum WideKeys
 {
-    ESC = 27,
+    ALT_OR_ESC = 27,
     ENTER = 10,
     CTRL_D = 4,
     CTRL_A = 1,
@@ -109,6 +109,11 @@ private:
         _dosearch = false;
     }
 
+    void handleAltOrEsc() {
+        if (getKeyAsync == -1) // esc is pressed
+            _terminate = Terminate.EXIT;
+    }
+
     void specialHandler()
     {
         switch (_key.key)
@@ -140,7 +145,9 @@ private:
         case WideKeys.BACKSPACE:
             backspace;
             break;
-        case WideKeys.ESC:
+        case WideKeys.ALT_OR_ESC:
+            handleAltOrEsc;
+            break;
         case WideKeys.CTRL_D:
             _terminate = Terminate.EXIT;
             break;

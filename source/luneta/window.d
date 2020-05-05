@@ -81,6 +81,14 @@ void withColor(Colors color, void delegate() fn)
     }
 }
 
+int getKeyAsync()
+{
+    nodelay(stdscr, true);
+    const k = getch();
+    nodelay(stdscr, false);
+    return k;
+}
+
 private:
 
 void startColor()
