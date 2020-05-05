@@ -4,9 +4,6 @@
 	"authors": [
 		"Felipe Beline Baravieira"
 	],
-	"targetType": "executable",
-	"importPaths": ["source/luneta"],
-	"sourcePaths": ["source/luneta"],
 	"copyright": "Copyright © 2020, Felipe Beline Baravieira",
 	"dependencies": {
 		"fuzzyd": "2.1.2-beta",
