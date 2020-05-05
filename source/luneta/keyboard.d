@@ -96,14 +96,14 @@ private:
         _cursorx = max(0, x);
     }
 
-    void previousSelection()
+    void previousLine()
     {
         const yLimit = max(0, printArea.height - matches.length.to!int);
         _selected = max(yLimit, _selected - 1);
         _dosearch = false;
     }
 
-    void nextSelection()
+    void nextLine()
     {
         _selected = min(getWindowSize.height - 3, _selected + 1);
         _dosearch = false;
@@ -122,10 +122,10 @@ private:
             backspace;
             break;
         case KEY_DOWN:
-            nextSelection;
+            nextLine;
             break;
         case KEY_UP:
-            previousSelection;
+            previousLine;
             break;
         case KEY_LEFT:
             cursorx = cursorx - 1;
@@ -165,14 +165,14 @@ private:
             cursorx = 0;
             break;
         case WideKeys.CTRL_N:
-            nextSelection;
+            nextLine;
             break;
         case WideKeys.CTRL_P:
-            previousSelection;
+            previousLine;
             break;
         case WideKeys.CTRL_SPACE:
             appendSelection;
-            nextSelection;
+            nextLine;
             _dosearch = false;
             break;
         default:

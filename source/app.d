@@ -20,7 +20,7 @@ struct Result
     int status;
 }
 
-string[] parseStdin()
+string[] readStdin()
 {
     return stdin
         .byLineCopy
@@ -87,7 +87,7 @@ int main(string[] args)
         return 0;
     }
 
-    auto db = parseStdin();
+    auto db = readStdin();
     auto fzy = fuzzy(db);
     Result result = Result();
 

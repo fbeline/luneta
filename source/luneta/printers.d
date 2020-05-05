@@ -62,9 +62,9 @@ void printMatches(KeyProcessor kp)
         }
     }
 
-    foreach (int i, m; kp.matches)
+    for (int i; i < kp.matches.length; i++)
     {
-        printLine(maxLines - i - 1, m);
+        printLine(maxLines - i - 1, kp.matches[i]);
     }
 }
 
