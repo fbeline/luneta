@@ -11,7 +11,6 @@ It's a fast and lightweight terminal tool that brings swiftness to your daily ha
 - Fast
 - Small binary (~ 1mb)
 - Multiple line selection
-- Adaptable screen size
 - Supports terminals that are not capable of redefining colors [_--color=FALSE_](https://asciinema.org/a/321218)
 
 Run `luneta -h` for help:
@@ -28,7 +27,6 @@ usage: luneta [options]
 
 ## Installation
 
-
 ### Brew
 
 `brew install fbeline/luneta/luneta`
@@ -37,10 +35,9 @@ usage: luneta [options]
 
 `snap install luneta`
 
-## Precompiled binaries
+### Precompiled binaries
 
-[Releases](https://github.com/fbeline/luneta/releases)
-
+[Releases](https://github.com/fbeline/luneta/releases) - 
 note: `libncurses` is required.
 
 ### Manual Installation
