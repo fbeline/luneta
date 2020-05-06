@@ -28,15 +28,20 @@ usage: luneta [options]
 
 ## Installation
 
-It should work on any ANSI/POSIX-conforming unix.
 
-[Precompiled binaries](https://github.com/fbeline/luneta/releases) - _Make sure that_ **libncurses** _is installed._
+### Brew
+
+`brew install fbeline/luneta/luneta`
 
 ### Snap
 
-[Linux distributions that support snaps](https://snapcraft.io/docs/installing-snapd).
-
 `snap install luneta`
+
+## Precompiled binaries
+
+[Releases](https://github.com/fbeline/luneta/releases)
+
+note: `libncurses` is required.
 
 ### Manual Installation
 
