@@ -1,15 +1,27 @@
 # luneta [![Build Status](https://travis-ci.org/fbeline/luneta.svg?branch=master)](https://travis-ci.org/fbeline/luneta) [![luneta](https://snapcraft.io//luneta/badge.svg)](https://snapcraft.io/luneta)
 
-Luneta is an interactive filter that can be easily composed within any script.
+
+Luneta is an interactive filter that can be used to find values in lists. It's easy to compose luneta with other commands. 
+
+For example:
+
+`cat $(ls | luneta)`
 
 ![render1588879971924](https://user-images.githubusercontent.com/5730881/81336973-9cda7e80-9080-11ea-91e9-0ad212ca2591.gif)
 
-## About
+In this example, a list of files and folders are passed to luneta, which opens an interactive screen that allows users to fuzzy search through it. After an item gets selected luneta writes it to the stdout.
+
+In short, it provides a convenient way to filter the data before passing it downstream in the script.
+
+> (list) stdin  -> luneta (interactive filter) -> stdout (selected value)
+
+Although luneta was originally created to be used as a command-line tool, it can be integrated with editors as well. See [Use with Vim](#Use-with-Vim) section.
+
+## Characteristics
 
 - Fast
-- Small binary (~ 1mb)
-- Multiple line selection
-- Supports terminals that are not capable of redefining colors [_--color=FALSE_](https://asciinema.org/a/321218)
+- Small (~1mb binary)
+- Support for multiple line selection
 
 Run `luneta -h` for help:
 
@@ -52,7 +64,7 @@ cd luneta
 dub build -b release --compiler ldc2
 ```
 
-## Usage examples
+## Usage
 
 Search a command in your shell history:
 
@@ -101,7 +113,7 @@ nnoremap <leader>v :call LunetaCommand("find . -type f", ":vs")<cr>
 nnoremap <leader>s :call LunetaCommand("find . -type f", ":sp")<cr>
 ```
 
-For better results is recommended to use searching tools like
+For better results is recommended to use tools like
 [ag](https://github.com/ggreer/the_silver_searcher),
 [rg](https://github.com/BurntSushi/ripgrep),
 [ack](https://beyondgrep.com/), etc.
