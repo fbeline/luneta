@@ -81,18 +81,23 @@ Refer to the [examples](/examples.md) for more.
 Just paste the code bellow in your `.vimrc` to use luneta as your file seaching tool.
 
 ```
+" Run a given vim command on the results of fuzzy selecting from a given shell
+" command. See usage below.
 function! LunetaCommand(choice_command, vim_command)
   try
     let output = system(a:choice_command . " | luneta ")
   catch /Vim:Interrupt/
-    " Swallow errors from ^C, allow redraw! below
-  endtry
-  redraw!
+    " Swallow the ^C so that the redraw below happens; otherwise there will be
+    " leftovers from luneta on the screen
+    endtry
+    redraw!
   if v:shell_error == 0 && !empty(output)
     exec a:vim_command . ' ' . output
   endif
 endfunction
 
+" Find all files in all non-dot directories starting in the working directory.
+" Fuzzy select one of those and open the selected file.
 nnoremap <leader>e :call LunetaCommand("find . -type f", ":e")<cr>
 nnoremap <leader>v :call LunetaCommand("find . -type f", ":vs")<cr>
 nnoremap <leader>s :call LunetaCommand("find . -type f", ":sp")<cr>
