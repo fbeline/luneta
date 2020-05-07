@@ -76,6 +76,41 @@ ps -e -o comm | luneta | xargs pkill
 
 Refer to the [examples](/examples.md) for more.
 
+## Use with Vim
+
+Just paste the code bellow in your `.vimrc` to use luneta as your file seaching tool.
+
+```
+function! LunetaCommand(choice_command, vim_command)
+  try
+    let output = system(a:choice_command . " | luneta ")
+  catch /Vim:Interrupt/
+    " Swallow errors from ^C, allow redraw! below
+  endtry
+  redraw!
+  if v:shell_error == 0 && !empty(output)
+    exec a:vim_command . ' ' . output
+  endif
+endfunction
+
+nnoremap <leader>e :call LunetaCommand("find . -type f", ":e")<cr>
+nnoremap <leader>v :call LunetaCommand("find . -type f", ":vs")<cr>
+nnoremap <leader>s :call LunetaCommand("find . -type f", ":sp")<cr>
+```
+
+For better results is recommended to use searching tools like
+[ag](https://github.com/ggreer/the_silver_searcher),
+[rg](https://github.com/BurntSushi/ripgrep),
+[ack](https://beyondgrep.com/), etc.
+
+```
+nnoremap <leader>e :call LunetaCommand("ag . --silent -l", ":e")<cr>
+nnoremap <leader>v :call LunetaCommand("ag . --silent -l", ":vs")<cr>
+nnoremap <leader>s :call LunetaCommand("ag . --silent -l", ":sp")<cr>
+```
+
+*This vimscript is a modified version of the [selecta](https://github.com/garybernhardt/selecta#use-with-vim).
+
 ## Keyboard shorcuts
 
 | Key | Action |
