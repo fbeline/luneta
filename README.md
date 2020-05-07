@@ -2,9 +2,7 @@
 
 Luneta is an interactive filter that can be easily composed within any script.
 
-It's a fast and lightweight terminal tool that brings swiftness to your daily hacks. :shell:
-
-![demo](https://user-images.githubusercontent.com/5730881/80897768-d141e980-8cd2-11ea-8548-91f712cf607d.gif)
+![render1588879971924](https://user-images.githubusercontent.com/5730881/81336973-9cda7e80-9080-11ea-91e9-0ad212ca2591.gif)
 
 ## About
 
