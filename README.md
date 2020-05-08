@@ -1,21 +1,17 @@
 # luneta [![Build Status](https://travis-ci.org/fbeline/luneta.svg?branch=master)](https://travis-ci.org/fbeline/luneta) [![luneta](https://snapcraft.io//luneta/badge.svg)](https://snapcraft.io/luneta)
 
-
-Luneta is an interactive filter that can be used to find values in lists. It's easy to compose luneta with other commands. 
-
-For example:
-
+Luneta is an interactive command-line filter that can be applied to any list, e.g.,
 `cat $(ls | luneta)`
 
 ![render1588879971924](https://user-images.githubusercontent.com/5730881/81336973-9cda7e80-9080-11ea-91e9-0ad212ca2591.gif)
 
 In this example, a list of files and folders are passed to luneta, which opens an interactive screen that allows users to fuzzy search through it. After an item gets selected luneta writes it to the stdout.
 
-In short, it provides a convenient way to filter the data before passing it downstream in the script.
+In short, it provides a convenient way to filter the data before passing it downstream.
 
 > (list) stdin  -> luneta (interactive filter) -> stdout (selected value)
 
-Although luneta was originally created to be used as a command-line tool, it can be integrated with editors as well. See [Use with Vim](#Use-with-Vim) section.
+Although luneta was originally created to be used as a command-line tool, it can be integrated in other applications, e.g., [Vim](#Use-with-Vim).
 
 ## Characteristics
 
