@@ -1,16 +1,16 @@
 {
-	"name": "luneta",
-	"description": "Luneta is an interactive filter that can be easily composed within any script.",
-	"authors": [
-		"Felipe Beline Baravieira"
-	],
-	"copyright": "Copyright © 2020, Felipe Beline Baravieira",
-	"dependencies": {
-		"fuzzyd": "2.1.2-beta",
-		"ncurses": "*"
-	},
-	"subConfigurations": {
-		"ncurses": "minimal"
-	},
-	"license": "GPL-2.0"
+  "name": "luneta",
+  "description": "Luneta is an interactive filter that can be easily composed within any script.",
+  "authors": [
+    "Felipe Beline Baravieira"
+  ],
+  "copyright": "Copyright © 2020, Felipe Beline Baravieira",
+  "dependencies": {
+    "fuzzyd": "2.2.0-beta",
+    "ncurses": "*"
+  },
+  "subConfigurations": {
+    "ncurses": "minimal"
+  },
+  "license": "GPL-2.0"
 }
