@@ -41,6 +41,12 @@ usage: luneta [options]
 
 `snap install luneta`
 
+### AUR
+
+https://aur.archlinux.org/packages/luneta
+
+Thanks to [@al1-ce](https://github.com/al1-ce)
+
 ### Precompiled binaries
 
 [Releases](https://github.com/fbeline/luneta/releases) - 
